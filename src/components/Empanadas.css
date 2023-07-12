@@ -1,0 +1,66 @@
+.empanadas_banner {
+    margin-top: 30px;
+    max-width: 300px;
+    margin: 0 auto;
+    z-index: 1;
+    order: -1; /* Mueve el banner al principio */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.empanadas_banner img{
+    width: 20vw;
+    min-width: 200px;
+}
+
+.empanadas-menu{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.empandas_nombres p{
+  text-align: center;
+  font-size: 1.2rem ;
+
+}
+
+.empanadas_precio{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+
+}
+
+.empanadas_precio img{
+  width: 20vw;
+  min-width: 200px;
+  
+}
+
+@media screen and (max-width: 576px) {
+  .empandas_nombres p{
+    text-align: center;
+    font-size: 15px;
+  
+  }
+}
+
+ /* For small devices */
+ @media screen and (max-width: 460px) {
+  .empandas_nombres p{
+    text-align: center;
+    font-size: 12px;
+    
+  }
+
+  .fila-product{
+    margin-left: 10px;
+  }
+
+}

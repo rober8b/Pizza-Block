@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@font-face {
+  font-family:"Kraft";
+  src: url(./assets/Kraft.ttf);
+}
+@font-face{
+  font-family: "Gill-italic";
+  src: url(./assets/Gill-italic.ttf);
+}
+@font-face{
+  font-family: "Gill";
+  src: url(./assets/Gill.otf);
+}
+
+:root {
+  font-family: Gill;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #000000;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body{
+  display: flex;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}

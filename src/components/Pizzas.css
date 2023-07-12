@@ -1,0 +1,132 @@
+.linea-punteada {
+    border: none;
+    border-top: 3px dotted #a7a7a7 ;
+    width: 80%;
+    padding-bottom: 0px !important;
+}
+
+.Pizzas-container{
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.pizzas_banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    order: -1; /* Mueve el banner al principio */
+}
+
+.pizzas_banner img{
+    width: 90vw;
+}
+  
+.fila-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.columna {
+    padding: 12px;
+}
+
+.product-brief{
+    display: inline-block;   
+    font-size: 1.5rem ;
+}
+
+
+.nombre-product{
+    flex: 2;
+    margin: 0;
+    min-width: 200px;
+}
+
+.descrip-product{
+    flex: 1;
+    font-size: 17px;
+    margin-top: 0;
+    font-family: Gill-italic;
+    margin-bottom: 0px;
+    color: #a7a7a7;
+}
+
+.precio-product{
+    flex: 1;
+    margin-top: 0;
+    font-size: 1.5rem ;
+
+}
+
+/*=============== BREAKPOINTS ===============*/
+
+  @media screen and (max-width: 576px) {
+    .linea-punteada {
+        border-top: 2px dotted #a7a7a7 ;
+    }
+
+    .nombre-product{
+        font-size: 1.25rem;
+    }
+
+    .precio-product{
+        font-size: 1.25rem;
+    }
+
+    .descrip-product{
+        font-size: 15px;
+    }
+    
+  }
+  
+  /* For small devices */
+  @media screen and (max-width: 480px) {
+    .product-brief{
+        width: 150px;
+    }
+
+    .product-brief h3{
+        width: 150px !important;
+    }
+
+    .linea-punteada {
+        border-top: 1px dotted #a7a7a7 ;
+        margin-left: 15px;
+    }
+
+    .nombre-product{
+        font-size: 0.875rem;
+    }
+
+    .precio-product{
+        font-size:  0.875rem;
+    }
+
+    .descrip-product{
+        font-size: 10px;
+    }
+
+
+
+  }
+
+/* For small devices */
+@media screen and (max-width: 380px) {
+    .nombre-product{
+        font-size: 0.7rem;
+    }
+
+    .precio-product{
+        font-size:  0.7rem;
+    }
+
+    .linea-punteada {
+        width: 50px !important;
+    }
+
+}
+      

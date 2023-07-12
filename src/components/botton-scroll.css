@@ -1,0 +1,52 @@
+
+.container-button{
+    display: flex;
+  justify-content: center;
+    margin: 50px;
+}
+
+.boton-scroll{
+    font: 1.7em Kraft;
+    box-shadow: 10px 10px 10px -6px #be272744;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: all 150ms linear;
+    background-color: #be2727;
+    border-radius: 15px;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+}
+  
+  .background-images {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+  
+  .background-image {
+    margin-left: 10px;
+  }
+  
+  .Imagen_1{
+    width: 100px;
+    height: 90px;
+  }
+
+  .Imagen_2{
+    width: 100px;
+    height: 100px;
+
+  }
+
+  .Imagen_3{
+    width: 100px;
+    height: 80px;
+  }
+
+@media screen and (max-width: 576px) {
+    .boton-scroll {
+        font: 1em Kraft;
+    }
+  
+  }

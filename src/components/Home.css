@@ -1,0 +1,66 @@
+.home-container {
+    display: flex;
+    margin: 0 auto;
+    max-width: 1000px;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row-reverse;
+    margin-top: 30px;
+    background-image: url('https://res.cloudinary.com/dx719oxg1/image/upload/v1688949954/banner_background_mtxvzy.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+}
+
+.container_home-text {
+  margin: 0 auto;
+  padding-right: 80px;
+}
+
+.home-text {
+    padding: 20px;
+    font-family: Kraft;
+    font-size: 3em;
+    font-weight: bolder;
+    border-radius: 20px;
+    border: 3px dotted #FFFFFFDE;
+    text-align: center;
+    background-color: rgb(1, 1, 1);
+}
+
+/*=============== BREAKPOINTS ===============*/
+
+@media screen and (max-width: 750px) {
+  .home-text {
+    font-size: 2em;
+  }
+
+}
+
+@media screen and (max-width: 576px) {
+  .home-text {
+      border: 2px dotted #a7a7a7 ;
+      padding: 10px;
+      font-size: 20px;
+  }
+
+}
+
+/* For small devices */
+@media screen and (max-width: 480px) {
+  .home-text {
+      border: 2px dotted #a7a7a7 ;
+      padding: 10px;
+      font-size: 16px;
+  }
+
+}
+
+/* For small devices */
+@media screen and (max-width: 380px) {
+  .container_home-text{
+    padding-left: 20px;
+  }
+}
+   

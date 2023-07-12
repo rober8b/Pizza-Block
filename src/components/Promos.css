@@ -1,0 +1,15 @@
+.container-promos{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-promos .promos_Title{
+    max-width: 90vw;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+.container-promos .promos_precios{
+    max-width: 90vw;
+}
