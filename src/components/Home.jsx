@@ -2,7 +2,7 @@ import React from 'react'
 import BotonScroll from './botton-scroll'
 import "./Home.css"
 import Social from './Social'
-import Linea_larga from '../assets/Linea-larga.png'
+import Linea_larga from '../assets/linea.png'
 
 function Home() {
   return (

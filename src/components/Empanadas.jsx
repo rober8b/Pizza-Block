@@ -2,7 +2,7 @@ import React from 'react'
 import banner_empanadas from '../assets/banner_empanadas.png'
 import "./Empanadas.css"
 import Precio_empanadas from '../assets/Precio_empanadas.png'
-import Linea_larga from '../assets/Linea-larga.png'
+import Linea_larga from '../assets/linea.png'
 
 const Empanadas = () => {
   return (
