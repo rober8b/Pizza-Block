@@ -5,7 +5,7 @@ import './Milanesas.css'
 import BannerSandwiches from '../assets/Milanesas_banner_2.png'
 import sandwichesData from '../data/Sandwiches-data'
 import delivery_image from '../assets/delivery.png'
-import Linea_larga from '../assets/Linea_larga.png'
+import Linea_larga from '../assets/Linea-larga.png'
 import fritasExtra_image from '../assets/extra_fritas-image.png'
 import papasData from '../data/Papas-data'
 
