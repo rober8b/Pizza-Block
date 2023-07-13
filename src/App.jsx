@@ -7,11 +7,6 @@ import Milanesas from './components/Milanesas'
 import Promos from './components/Promos'
 import Footer from './components/Footer'
 import BtnWsp from './components/BtnWsp'
-import ilustracion1 from './assets/ilustracion1.png'
-import ilustracion2 from './assets/ilustracion2.png'
-import ilustracion3 from './assets/ilustracion3.png'
-import ilustracion4 from './assets/ilustracion4.png'
-import ilustracion5 from './assets/ilustracion5.png'
 
 function App() {
 

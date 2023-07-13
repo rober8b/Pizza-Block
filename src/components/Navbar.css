@@ -63,17 +63,3 @@
         width: 80px;
     }
 }
-
-@media screen and (max-width: 380px) {
-    .navbar_nav ul li a {
-        font-size: .7rem;
-    }
-
-    .navbar_nav ul{
-        margin: 0 auto
-    }
-
-    .logo-container img{
-        width: 80px;
-    }
-}

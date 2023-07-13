@@ -99,15 +99,15 @@
     }
 
     .nombre-product{
-        font-size: 0.875rem;
+        font-size: 1rem;
     }
 
     .precio-product{
-        font-size:  0.875rem;
+        font-size:  1rem;
     }
 
     .descrip-product{
-        font-size: 10px;
+        font-size: 12px;
     }
 
 
@@ -117,11 +117,11 @@
 /* For small devices */
 @media screen and (max-width: 380px) {
     .nombre-product{
-        font-size: 0.7rem;
+        font-size: 0.885rem;
     }
 
     .precio-product{
-        font-size:  0.7rem;
+        font-size:  0.885rem;
     }
 
     .linea-punteada {
