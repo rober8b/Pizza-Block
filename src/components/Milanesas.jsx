@@ -28,6 +28,21 @@ const Milanesas = () => {
                     </div>
             ))}
 
+            <div className="papas_banner">
+                <img className="papas_extra-img"src={fritasExtra_image} alt="Banner de pizza block papas" />
+            </div>
+            {papasData.map(({id, nombre, precio}) => (
+                <div key={id} className='fila-product'>
+                    <div className="product-brief_papas columna">
+                            <h3 className='nombre-product_papas'>{nombre}</h3>
+                    </div>
+                    <div className="linea-punteada columna"></div>
+                    <div className="columna">
+                            <h3 className='precio-product'>${precio}</h3>
+                    </div>     
+                </div>
+            ))}
+
 
             <div className="banner_sandwiches">
                     <img className='banner_sandwiches-img' src={BannerSandwiches} alt="Banner de pizza block Sandwiches" />
@@ -46,24 +61,6 @@ const Milanesas = () => {
                 </div>
             ))}
         
-            <div className="linea_div">
-              <img className='linea_div-img' src={Linea_larga} alt="linea pizza block Sandwiches" />
-            </div>
-
-            <div className="papas_banner">
-                <img className="papas_extra-img"src={fritasExtra_image} alt="Banner de pizza block papas" />
-            </div>
-            {papasData.map(({id, nombre, precio}) => (
-                <div key={id} className='fila-product'>
-                    <div className="product-brief_papas columna">
-                            <h3 className='nombre-product_papas'>{nombre}</h3>
-                    </div>
-                    <div className="linea-punteada columna"></div>
-                    <div className="columna">
-                            <h3 className='precio-product'>${precio}</h3>
-                    </div>     
-                </div>
-            ))}
     </div>
   )
 }
