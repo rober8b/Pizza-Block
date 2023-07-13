@@ -2,6 +2,7 @@ import React from 'react'
 import logo from '../assets/logo.png';
 import './Footer.css'
 import delivery_image from '../assets/delivery.png'
+import instagramLogo from '../assets/instagram-logo.png'
 
 
 const Footer = () => {
@@ -18,15 +19,15 @@ const Footer = () => {
                 <div className="footer__social">
                     <a 
                     href="https://www.instagram.com/pizzablock.ar/" 
-                    className="home__social-icon" 
+                    className="home__social-icon instagram" 
                     target="_blank"
                     >
-                    <i className="uil uil-instagram-alt"></i>
+                    <img src={instagramLogo} alt="logo de instagram" />
                     <p>@pizzablock.ar</p>
                     </a>
 
                     <a 
-                    href="https://www.facebook.com/pizzablock.ar/" className="home__social-icon" 
+                    href="https://www.facebook.com/pizzablock.ar/" className="home__social-icon facebook" 
                     target="_blank"
                     >
                     <i className="uil uil-facebook"></i>
@@ -35,7 +36,7 @@ const Footer = () => {
 
                     <a 
                     href="https://wa.me/541151772724" 
-                    className="home__social-icon" 
+                    className="home__social-icon whatsapp" 
                     target="_blank"
                     >
                     <i className="uil uil-whatsapp-alt"></i>

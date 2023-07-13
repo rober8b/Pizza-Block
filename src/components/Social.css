@@ -10,8 +10,22 @@
 .home__social-icon{
     font-size: 2rem;
     transition: .3s;
-    color: #be2727;
     text-decoration: none;
+}
+
+.home__social-icon img {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 32px;
+    height: 32px;
+}
+
+.facebook{
+    color: #3b5998;
+}
+
+.whatsapp{
+    color: #25d366;
 }
 
 .home__social .home__social-icon{
@@ -26,6 +40,13 @@
 
     .home__social-icon{
         font-size: 20px;
+    }
+
+    .home__social-icon img {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        width: 20px;
+        height: 20px;
     }
 }
 
