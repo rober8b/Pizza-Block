@@ -45,7 +45,7 @@ const Footer = () => {
 
                     <a 
                     href="tel:+5421995972" 
-                    className="home__social-icon" 
+                    className="home__social-icon phone" 
                     target="_blank"
                     >
                     <i className="uil uil-phone"></i>
