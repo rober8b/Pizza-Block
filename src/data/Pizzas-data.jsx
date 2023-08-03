@@ -1,7 +1,7 @@
 
 const productos = [
     { id: 1, nombre: 'Mozzarella', descripcion: 'Salsa de tomate y mozzarella', precio: 3000 },
-    { id: 2, nombre: 'Doble Mozza', descripcion: 'Salsa de tomate, mozzarella y jamón',precio: 
+    { id: 2, nombre: 'Doble Mozza', descripcion: 'Salsa de tomate y doble mozzarella',precio: 
     4000 },
     { id: 3, nombre: 'Mozza c/Jamón', descripcion: 'Salsa de tomate, mozzarella y jamón',precio: 3750 },
     { id: 4, nombre: 'Mozza c/anchoas', descripcion: 'Salsa de tomate, mozzarella y anchoas', precio: 4250 },
