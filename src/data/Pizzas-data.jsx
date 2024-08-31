@@ -10,7 +10,7 @@ const productos = [
     { id: 7, nombre: 'Napolitana y Jamón', descripcion: 'Salsa de tomate, mozzarella, tomate natural y jamón', precio: 17500 },
     { id: 8, nombre: 'Fugaza c/Queso', descripcion: 'cebolla y mozzarella',precio: 13500 },
     { id: 9, nombre: 'Fugaza rellena', descripcion: 'cebolla, mozzarella y jamón',precio: 25000 },
-    { id: 10, nombre: 'Salchicha', descripcion: 'Salsa de tomate, mozzarella y salchicha', precio: 15002 },
+    { id: 10, nombre: 'Salchicha', descripcion: 'Salsa de tomate, mozzarella y salchicha', precio: 15000 },
     { id: 11, nombre: 'Palmitos', descripcion: 'Salsa de tomate, mozzarella y palmito',precio: 17500 },
     { id: 12, nombre: 'Palmitos c/Jamón', descripcion: 'Salsa de tomate, mozzarella, palmito y jamón',precio: 19500 },
     { id: 13, nombre: 'Champiñones', descripcion: 'Salsa de tomate, mozzarella y champiñon',precio: 19500 },
