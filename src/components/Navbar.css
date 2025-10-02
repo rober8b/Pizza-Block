@@ -7,6 +7,11 @@
   transition: all 0.3s ease;
 }
 
+/* Asegurarse de que el header sea el contenedor para posicion absolute */
+.header {
+  position: relative;
+}
+
 .sticky {
     top: 0;
     left: 0;
@@ -30,11 +35,18 @@
     width: 120px;
 }
 
-.mp-banner {
-  height: 50px; /* más chico que el logo */
-  object-fit: contain;
+/* Banner MP fijo dentro del header, a la izquierda */
+.mp-banner-fixed {
+  position: absolute;
+  left: 16px; /* ajustá este valor si tu header tiene más/menos padding */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 180px !important;  
+  height: auto;    
+  z-index: 50;
+  pointer-events: none;  /* no interfiere con clicks si está encima de algo */
 }
-  
+
 .navbar_nav ul {
     list-style-type: none;
     margin: 0;
@@ -56,6 +68,15 @@
     font-size: 1.5rem;
 }
 
+@media (max-width: 768px) {
+  .mp-banner-fixed {
+    height: 50px;
+    width: 120px !important;
+    left: 12px;
+    top: 40%;
+  }
+}
+
 @media screen and (max-width: 460px) {
     .navbar_nav ul li a {
         font-size: 1rem;
@@ -67,5 +88,12 @@
 
     .logo-container img{
         width: 80px;
+    }
+
+    .mp-banner-fixed {
+        height: 40px;
+        width: 100px !important;
+        left: 5px;
+        top: 40%;
     }
 }
