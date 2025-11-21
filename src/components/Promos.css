@@ -1,15 +1,389 @@
-.container-promos{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.container-promos {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  animation: fadeIn 0.6s ease-in;
+  scroll-margin-top: 80px;
 }
 
-.container-promos .promos_Title{
-    max-width: 90vw;
-    margin-top: 30px;
-    margin-bottom: 10px;
+.banner_delivery-img{
+  max-width: 100%;
+  margin: 0 auto;
+  width: 250px;
+  border-radius: 12px;
 }
-.container-promos .promos_precios{
-    max-width: 90vw;
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header con imagen */
+.promos-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.promos_Title {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Intro */
+.promos-intro {
+  text-align: center;
+  margin: 1rem 0 2rem 0;
+}
+
+.intro-icon {
+  color: #d32f2f;
+  margin-bottom: 1rem;
+}
+
+.promos-intro h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.promos-intro h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+  border-radius: 2px;
+}
+
+.promos-intro p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-top: 1rem;
+}
+
+/* Grid de promos */
+.promos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.promo-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 3px solid transparent;
+  overflow: hidden;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.promo-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(211, 47, 47, 0.2);
+  border-color: #d32f2f;
+}
+
+.promo-badge {
+  background: linear-gradient(135deg, #d32f2f, #ff5252);
+  color: white;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.promo-content {
+  padding: 1.5rem;
+}
+
+.promo-nombre {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.promo-descripcion {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.promo-footer {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.promo-precio {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+.promo-btn {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.promo-btn:hover {
+  background: #b71c1c;
+  transform: scale(1.05);
+}
+
+/* Imagen de precios */
+.promos-image-container {
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.promos_precios {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeInModal 0.3s ease;
+  padding: 1rem;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: white;
+  padding: 0;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.modal-promo-badge {
+  background: linear-gradient(135deg, #d32f2f, #ff5252);
+  color: white;
+  padding: 1.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin: 1.5rem 2rem 1rem 2rem;
+  text-align: center;
+}
+
+.modal-promo-description {
+  padding: 0 2rem 1rem 2rem;
+  text-align: center;
+}
+
+.modal-items {
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.modal-detail {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.modal-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: #f8f9fa;
+  margin: 1rem 0;
+}
+
+.price-label {
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.price-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+.modal-delivery-badge {
+  background: #4caf50;
+  color: white;
+  padding: 0.75rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 2rem 1rem 2rem;
+  border-radius: 8px;
+}
+
+.modal-info {
+  text-align: center;
+  padding: 1.5rem 2rem 2rem 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.modal-info p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .banner_delivery-img{
+  width: 100px;
+  }
+
+  .promos-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .promos-intro h2 {
+    font-size: 2rem;
+  }
+
+  .promos-intro p {
+    font-size: 1rem;
+  }
+
+  .promo-nombre {
+    font-size: 1.3rem;
+  }
+
+  .promo-precio {
+    font-size: 1.7rem;
+  }
+
+  .promo-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .promo-btn {
+    width: 100%;
+  }
+
+  .modal-title {
+    font-size: 1.6rem;
+  }
+
+  .price-value {
+    font-size: 2rem;
+  }
+
+  .modal-content {
+    margin: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-promos {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .promos-intro h2 {
+    font-size: 1.7rem;
+  }
+
+  .intro-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .promo-badge {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .modal-price {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
 }

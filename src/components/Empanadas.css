@@ -1,66 +1,359 @@
-.empanadas_banner {
-    margin-top: 30px;
-    max-width: 300px;
-    margin: 0 auto;
-    z-index: 1;
-    order: -1; /* Mueve el banner al principio */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.empanadas_banner img{
-    width: 20vw;
-    min-width: 200px;
-}
-
-.empanadas-menu{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-}
-
-.empandas_nombres p{
-  text-align: center;
-  font-size: 1.2rem ;
-
-}
-
-.empanadas_precio{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  max-width: 400px;
+.empanadas-container {
+  max-width: 1200px;
   margin: 0 auto;
-
+  padding: 2rem 1rem;
+  animation: fadeIn 0.6s ease-in;
+  scroll-margin-top: 80px;
 }
 
-.empanadas_precio img{
-  width: 20vw;
-  min-width: 200px;
-  
-}
-
-@media screen and (max-width: 576px) {
-  .empandas_nombres p{
-    text-align: center;
-    font-size: 15px;
-  
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
- /* For small devices */
- @media screen and (max-width: 460px) {
-  .empandas_nombres p{
-    text-align: center;
-    font-size: 12px;
-    
+/* Banner */
+.empanadas_banner {
+  text-align: center;
+  margin-bottom: 2rem;
+
+}
+
+.empanadas_banner img {
+  width: 300px ;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 0 auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Header de sección */
+.section-header {
+  text-align: center;
+  margin: 2rem 0 1.5rem 0;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+  border-radius: 2px;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: #979797;
+  margin-top: 0.5rem;
+}
+
+/* Buscador */
+.search-container {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.search-box {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 45px 12px 45px;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none;
+}
+
+.clear-search {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.clear-search:hover {
+  color: #d32f2f;
+}
+
+/* Grid de sabores */
+.sabores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0 3rem 0;
+}
+
+.sabor-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+  text-align: center;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sabor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(211, 47, 47, 0.15);
+  border-color: #d32f2f;
+}
+
+.sabor-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #d32f2f, #ff5252);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.sabor-card:hover .sabor-icon {
+  transform: scale(1.1) rotate(10deg);
+}
+
+.sabor-nombre {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.sabor-descripcion {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Precio */
+.empanadas_precio {
+  text-align: center;
+  margin: 3rem 0 2rem 0;
+}
+
+.empanadas_precio img {
+  max-width: 100%;
+  margin: 0 auto;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Línea divisoria */
+.linea_div {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.linea_div-img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Sin resultados */
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeInModal 0.3s ease;
+  padding: 1rem;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.modal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.modal-description {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.modal-info {
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.modal-info p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sabores-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
   }
 
-  .fila-product{
-    margin-left: 10px;
+  .section-title {
+    font-size: 2rem;
   }
 
+  .section-subtitle {
+    font-size: 1rem;
+  }
+
+  .sabor-nombre {
+    font-size: 1.1rem;
+  }
+
+  .sabor-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .modal-content {
+    padding: 2rem;
+    margin: 1rem;
+  }
+
+  .modal-title {
+    font-size: 1.6rem;
+  }
+
+  .modal-icon {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sabores-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+
+  }
+
+  .search-input {
+    font-size: 14px;
+    padding: 10px 40px;
+  }
+
+
+  .section-title {
+    font-size: 1.7rem;
+  }
+
+  .empanadas-container {
+    padding: 1.5rem 0.75rem;
+  }
 }

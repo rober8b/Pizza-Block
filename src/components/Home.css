@@ -26,6 +26,7 @@
     font-weight: bolder;
     border-radius: 20px;
     text-align: center;
+    color: #e7e7e7;
     background-color: rgb(1, 1, 1);
 }
 
@@ -38,21 +39,12 @@
 
 }
 
-@media screen and (max-width: 576px) {
-  .home-text {
-
-      padding: 10px;
-      font-size: 20px;
-  }
-
-}
 
 /* For small devices */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 500px) {
   .home-text {
-
-      padding: 10px;
-      font-size: 16px;
+      padding: 15px;
+      font-size: 25px;
   }
 
 }
@@ -61,6 +53,11 @@
 @media screen and (max-width: 380px) {
   .container_home-text{
     padding-left: 20px;
+  }
+
+    .home-text {
+      padding: 10px;
+      font-size: 20px;
   }
 }
    

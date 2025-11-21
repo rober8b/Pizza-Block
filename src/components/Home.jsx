@@ -6,7 +6,7 @@ import Linea_larga from '../assets/linea.png'
 
 function Home() {
   return (
-    <div>
+    <div id="home">
         <div className="home-container">
             <div className="container_home-text">
                 <p className='home-text'>Fanaticos de la Pizza</p>

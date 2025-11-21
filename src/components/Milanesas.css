@@ -1,115 +1,405 @@
-.milanesas-container{
-    max-width: 600px;
-    margin: 0 auto;
+.milanesas-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  animation: fadeIn 0.6s ease-in;
+  scroll-margin-top: 80px;
 }
 
-.milanesas_banner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    order: -1; /* Mueve el banner al principio */
-    margin-top: 50px;
-    margin-bottom: 30px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Banners */
+.milanesas_banner,
+.papas_banner,
+.banner_sandwiches {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.milanesas_banner img,
+.papas_extra-img,
+.banner_sandwiches-img{
+  max-width: 100%;
+  margin: 0 auto;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.banner_sandwiches {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 3rem 0 2rem 0;
+}
+
+.banner_sandwiches-img{
+  flex: 1;
+  min-width: 250px;
+  max-width: 500px;
+}
+
+.papas_banner {
+  margin: 3rem 0 2rem 0;
+}
+
+/* Headers de sección */
+.section-header {
+  text-align: center;
+  margin: 2rem 0 1.5rem 0;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+  border-radius: 2px;
+}
+
+.section-title-small {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.section-title-small::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #d32f2f, #ff5252);
+  border-radius: 2px;
+}
+
+/* Buscador */
+.search-container {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.search-box {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 45px 12px 45px;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none;
+}
+
+.clear-search {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.clear-search:hover {
+  color: #d32f2f;
+}
+
+/* Grid de productos */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.product-card-simple {
+  min-height: 100px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(211, 47, 47, 0.15);
+  border-color: #d32f2f;
+}
+
+.product-content {
+  flex: 1;
+}
+
+.nombre-product {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.descrip-product {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.product-price {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 2px dashed #e0e0e0;
+}
+
+.precio-product {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+/* Sin resultados */
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeInModal 0.3s ease;
+  padding: 1rem;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.modal-description {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.modal-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: #f5f5f5;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.price-label {
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.price-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+.modal-info {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.modal-info p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
   }
 
-.milanesas_banner img{
-    width: 90vw;
+  .product-card {
+    padding: 1.25rem;
+  }
+
+  .nombre-product {
+    font-size: 1.2rem;
+  }
+
+  .precio-product {
+    font-size: 1.3rem;
+  }
+
+  .modal-content {
+    padding: 2rem;
+    margin: 1rem;
+  }
+
+  .modal-title {
+    font-size: 1.6rem;
+  }
+
+  .price-value {
+    font-size: 1.6rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-title-small {
+    font-size: 1.7rem;
+  }
+
+  .banner_sandwiches {
+    flex-direction: column;
+  }
+
+  .banner_sandwiches-img{
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
-.banner_sandwiches{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-    order: -1; /* Mueve el banner al principio */
-    margin-top: 20px;
-    margin-bottom: 30px;
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .search-input {
+    font-size: 14px;
+    padding: 10px 40px;
+  }
+
+  .product-card {
+    min-height: 120px;
+  }
+
+  .product-card-simple {
+    min-height: 90px;
+  }
+
+  .section-title {
+    font-size: 1.7rem;
+  }
+
+  .section-title-small {
+    font-size: 1.5rem;
+  }
+
+  .milanesas-container {
+    padding: 1.5rem 0.75rem;
+  }
 }
-
-.banner_sandwiches .banner_sandwiches-img{
-    width: 300px;
-}
-
-.banner_sandwiches .banner_delivery-img{
-    width: 200px;
-    padding-left: 30px;
-}
-
-
-.linea_div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.linea_div-img{
-    width: 60vw;
-    padding-bottom: 10px;
-}
-
-.papas_banner{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    margin-top: 10px;
-}
-
-.papas_banner .papas_extra-img{
-    width: 50vw;
-    min-width: 260px;
-}
-
-.product-brief_papas{
-    display: inline-block;
-}
-
-
-.nombre-product_papas{
-    padding-bottom: 20px;
-    flex: 2;
-    margin: 0;
-    width: 200px;
-}
-
-@media screen and (max-width: 576px) {
-    .banner_sandwiches .banner_sandwiches-img{
-        width: 250px;
-    }
-    
-    .banner_sandwiches .banner_delivery-img{
-        width: 100px;
-        padding-left: 30px;
-    }
-
-    .nombre-product_papas{
-        font-size: 0.875rem;
-        width: 150px;
-    }
-}
-
-/* For small devices */
-@media screen and (max-width: 460px) {
-    .banner_sandwiches .banner_sandwiches-img{
-        width: 200px;
-    }
-    
-    .banner_sandwiches .banner_delivery-img{
-        width: 100px !important;
-        padding-left: 30px;
-    }
-}
-
-  /* For small devices */
-@media screen and (max-width: 380px) {
-    .banner_sandwiches .banner_sandwiches-img{
-        width: 150px;
-    }
-    
-    .banner_sandwiches .banner_delivery-img{
-        width: 80px !important;
-        padding-left: 10px;
-    }
-
-}
-      

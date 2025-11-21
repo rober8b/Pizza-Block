@@ -1,27 +1,26 @@
 import React, { useState } from 'react'
-import productos from '../data/Pizzas-data'
-import './Pizzas.css'
-import pizzas_banner from '../assets/pizzas_banner.png'
 import { Search, X } from 'lucide-react'
+import './MenuSection.css'
 
-const Pizzas = () => {
+const MenuSection = ({ id, title, banner, productos }) => {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedPizza, setSelectedPizza] = useState(null)
+  const [selectedItem, setSelectedItem] = useState(null)
 
-  // Filtrar productos según búsqueda
   const filteredProducts = productos.filter(producto =>
     producto.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
     producto.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   return (
-    <div className='Pizzas-container' id='pizzas'>
-      <div className="pizzas_banner">
-        <img src={pizzas_banner} alt="Banner de pizza block" />
-      </div>
+    <div className='menu-section' id={id}>
+      {banner && (
+        <div className="section-banner">
+          <img src={banner} alt={`Banner de ${title}`} />
+        </div>
+      )}
 
       <div className="section-header">
-        <h2 className="section-title">Pizzas</h2>
+        <h2 className="section-title">{title}</h2>
       </div>
 
       {/* Buscador */}
@@ -30,7 +29,7 @@ const Pizzas = () => {
           <Search className="search-icon" size={20} />
           <input
             type="text"
-            placeholder="Buscar pizza..."
+            placeholder={`Buscar ${title.toLowerCase()}...`}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
@@ -52,11 +51,11 @@ const Pizzas = () => {
           <div 
             key={id} 
             className='product-card'
-            onClick={() => setSelectedPizza({id, nombre, descripcion, precio})}
+            onClick={() => setSelectedItem({id, nombre, descripcion, precio})}
           >
             <div className="product-content">
               <h3 className='nombre-product'>{nombre}</h3>
-              <p className='descrip-product'>{descripcion}</p>
+              {descripcion && <p className='descrip-product'>{descripcion}</p>}
             </div>
             <div className="product-price">
               <span className='precio-product'>${precio.toLocaleString('es-AR')}</span>
@@ -67,25 +66,27 @@ const Pizzas = () => {
 
       {filteredProducts.length === 0 && (
         <div className="no-results">
-          <p>No se encontraron pizzas con "{searchTerm}"</p>
+          <p>No se encontraron resultados para "{searchTerm}"</p>
         </div>
       )}
 
       {/* Modal de detalles */}
-      {selectedPizza && (
-        <div className="modal-overlay" onClick={() => setSelectedPizza(null)}>
+      {selectedItem && (
+        <div className="modal-overlay" onClick={() => setSelectedItem(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button 
               className="modal-close"
-              onClick={() => setSelectedPizza(null)}
+              onClick={() => setSelectedItem(null)}
             >
               <X size={24} />
             </button>
-            <h2 className="modal-title">{selectedPizza.nombre}</h2>
-            <p className="modal-description">{selectedPizza.descripcion}</p>
+            <h2 className="modal-title">{selectedItem.nombre}</h2>
+            {selectedItem.descripcion && (
+              <p className="modal-description">{selectedItem.descripcion}</p>
+            )}
             <div className="modal-price">
               <span className="price-label">Precio:</span>
-              <span className="price-value">${selectedPizza.precio.toLocaleString('es-AR')}</span>
+              <span className="price-value">${selectedItem.precio.toLocaleString('es-AR')}</span>
             </div>
             <div className="modal-info">
               <p>Para hacer tu pedido, contactanos por WhatsApp</p>
@@ -97,4 +98,4 @@ const Pizzas = () => {
   )
 }
 
-export default Pizzas
+export default MenuSection

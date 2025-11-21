@@ -70,7 +70,7 @@ const Footer = () => {
 
         <div className="copy_container">
             <div className="copy-text">
-                <p>© Pizza Block 2023</p>
+                <p>© Pizza Block 2025</p>
             </div>
         </div>
     </div>
