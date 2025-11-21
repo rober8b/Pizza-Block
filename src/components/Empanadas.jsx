@@ -4,10 +4,13 @@ import banner_empanadas from '../assets/banner_empanadas.png'
 import "./Empanadas.css"
 import Precio_empanadas from '../assets/Precio_empanadas.png'
 import Linea_larga from '../assets/linea.png'
+import { useCart } from '../context/CartContext'
+import { ShoppingCart } from 'lucide-react'
 
 const Empanadas = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedEmpanada, setSelectedEmpanada] = useState(null)
+  const { addToCart } = useCart()
 
   // Lista de sabores de empanadas
   const sabores = [
@@ -27,6 +30,14 @@ const Empanadas = () => {
   const filteredSabores = sabores.filter(sabor =>
     sabor.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+  const handleAddToCart = (producto, e) => {
+  e.stopPropagation()
+  addToCart({
+    ...producto,
+    categoria: 'Milanesas' // Cambiar según el componente
+  })
+}
 
   return (
     <div className='empanadas-container' id='empanadas'>
@@ -74,7 +85,14 @@ const Empanadas = () => {
             </div>
             <h3 className='sabor-nombre'>{sabor.nombre}</h3>
             <p className='sabor-descripcion'>{sabor.descripcion}</p>
+
+            <button className="add-to-cart-btn" 
+            onClick={(e) => handleAddToCart(producto, e)}>
+            <ShoppingCart size={18} />  
+            Agregar 
+            </button>
           </div>
+
         ))}
       </div>
 

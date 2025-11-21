@@ -143,3 +143,23 @@ img {
   white-space: nowrap;
   border-width: 0;
 }
+
+.add-to-cart-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #d32f2f, #ff5252);
+  color: white;
+  border: none;
+  padding: 0.625rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.add-to-cart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}

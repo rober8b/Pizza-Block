@@ -3,16 +3,27 @@ import productos from '../data/Pizzas-data'
 import './Pizzas.css'
 import pizzas_banner from '../assets/pizzas_banner.png'
 import { Search, X } from 'lucide-react'
+import { useCart } from '../context/CartContext'
+import { ShoppingCart } from 'lucide-react'
 
 const Pizzas = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedPizza, setSelectedPizza] = useState(null)
+  const { addToCart } = useCart()
 
   // Filtrar productos según búsqueda
   const filteredProducts = productos.filter(producto =>
     producto.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
     producto.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
   )
+
+  const handleAddToCart = (producto, e) => {
+  e.stopPropagation()
+  addToCart({
+    ...producto,
+    categoria: 'Milanesas' // Cambiar según el componente
+  })
+}
 
   return (
     <div className='Pizzas-container' id='pizzas'>
@@ -61,6 +72,13 @@ const Pizzas = () => {
             <div className="product-price">
               <span className='precio-product'>${precio.toLocaleString('es-AR')}</span>
             </div>
+            <button 
+              className="add-to-cart-btn"
+              onClick={(e) => handleAddToCart(producto, e)}
+            >
+              <ShoppingCart size={18} />
+              Agregar
+            </button>
           </div>
         ))}
       </div>

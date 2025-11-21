@@ -1,3 +1,5 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { CartProvider } from './context/CartContext'
 import './App.css'
 import Home from './components/Home'
 import Navbar from './components/Navbar'
@@ -7,20 +9,39 @@ import Milanesas from './components/Milanesas'
 import Promos from './components/Promos'
 import Footer from './components/Footer'
 import BtnWsp from './components/BtnWsp'
+import Cart from './components/Cart'
+import CartButton from './components/CartButton'
+import Checkout from './pages/Checkout'
+
+function HomePage() {
+  return (
+    <>
+      <Navbar />
+      <Home />
+      <Pizzas />
+      <Empanadas />
+      <Milanesas />
+      <Promos />
+      <Footer />
+    </>
+  )
+}
 
 function App() {
-
   return (
-    <div className='App'>
-        <Navbar />
-        <Home />
-        <Pizzas />
-        <Empanadas />
-        <Milanesas />
-        <Promos />
-        <BtnWsp />
-        <Footer />
-    </div>
+    <CartProvider>
+      <Router>
+        <div className='App'>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/checkout" element={<Checkout />} />
+          </Routes>
+          <Cart />
+          <CartButton />
+          <BtnWsp />
+        </div>
+      </Router>
+    </CartProvider>
   )
 }
 
