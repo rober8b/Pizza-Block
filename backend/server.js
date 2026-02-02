@@ -17,62 +17,18 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // ============================================
 // MONGODB - Guardar sesión de WhatsApp
-// ============================================
+// ============================================ 
+const { MongoStore } = require('wwebjs-mongo');
+const mongoose = require('mongoose');
+
+let store;
 
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB conectado'))
+  .then(() => {
+    console.log('✅ MongoDB conectado');
+    store = new MongoStore({ mongoose: mongoose });
+  })
   .catch(err => console.error('❌ Error conectando MongoDB:', err));
-
-// Schema para guardar la sesión de WhatsApp
-const sessionSchema = new mongoose.Schema({
-  _id: String,
-  session: String
-});
-const Session = mongoose.model('Session', sessionSchema);
-
-// Clase para persistir la sesión en MongoDB en lugar de en disco
-class MongoStore {
-  constructor() {
-    this.sessionName = 'pizza-block-session';
-  }
-
-  async save(session) {
-    try {
-      await Session.findOneAndUpdate(
-        { _id: this.sessionName },
-        { session: session },
-        { upsert: true }
-      );
-      console.log('💾 Sesión de WhatsApp guardada en MongoDB');
-    } catch (error) {
-      console.error('❌ Error guardando sesión:', error);
-    }
-  }
-
-  async extract() {
-    try {
-      const doc = await Session.findById(this.sessionName);
-      if (doc) {
-        console.log('📂 Sesión de WhatsApp recuperada de MongoDB');
-        return doc.session;
-      }
-      return null;
-    } catch (error) {
-      console.error('❌ Error extrayendo sesión:', error);
-      return null;
-    }
-  }
-
-  async delete() {
-    try {
-      await Session.findByIdAndDelete(this.sessionName);
-      console.log('🗑️ Sesión de WhatsApp eliminada de MongoDB');
-    } catch (error) {
-      console.error('❌ Error eliminando sesión:', error);
-    }
-  }
-}
-
 // ============================================
 // CONFIGURACIÓN DE WHATSAPP
 // ============================================
@@ -85,7 +41,7 @@ const MAX_RECONNECT_ATTEMPTS = 5;
 function createWhatsAppClient() {
   whatsappClient = new Client({
     authStrategy: new RemoteAuth({
-      store: new MongoStore(),
+      store: store,
       clientId: 'pizza-block-client',
       backupSyncIntervalMs: 60000
     }),
