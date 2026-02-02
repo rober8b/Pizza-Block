@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Clock, AlertCircle, CheckCircle, X, Info } from 'lucide-react'
-import { getMensajeEstado, getHorariosCompletos } from '../utils/horariosService'
+import { getMensajeEstado, getHorariosCompletos } from '../utils/HorariosService'
 import './HorariosBanner.css'
 
 const HorariosBanner = () => {
