@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { Client, WAWebJS, MessageMedia } = require('whatsapp-web.js');
+const { Client, MessageMedia, RemoteAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const mongoose = require('mongoose');
 
@@ -84,7 +84,7 @@ const MAX_RECONNECT_ATTEMPTS = 5;
 
 function createWhatsAppClient() {
   whatsappClient = new Client({
-    authStrategy: new WAWebJS.RemoteAuth({
+    authStrategy: new RemoteAuth({
       store: new MongoStore(),
       clientId: 'pizza-block-client',
     }),
