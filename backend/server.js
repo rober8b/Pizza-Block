@@ -87,6 +87,7 @@ function createWhatsAppClient() {
     authStrategy: new RemoteAuth({
       store: new MongoStore(),
       clientId: 'pizza-block-client',
+      backupSyncIntervalMs: 60000
     }),
     puppeteer: {
       headless: true,
