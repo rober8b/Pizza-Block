@@ -1,11 +1,23 @@
-import React, { useState } from 'react'
-import { X, Tag, Package } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { X, Tag, Package, ShoppingCart, Lock } from 'lucide-react'
 import delivery_image from '../assets/delivery.png'
 import './Promos.css'
+import { useCart } from '../context/CartContext'
+import { estaAbierto } from '../utils/HorariosService'
 
 const Promos = () => {
   const [showModal, setShowModal] = useState(false)
   const [selectedPromo, setSelectedPromo] = useState(null)
+  const [abierto, setAbierto] = useState(estaAbierto())
+  const { addToCart } = useCart()
+
+  // Verificar estado cada minuto
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAbierto(estaAbierto())
+    }, 60000)
+    return () => clearInterval(interval)
+  }, [])
 
   // Datos de las promos basados en tu imagen
   const promos = [
@@ -45,6 +57,22 @@ const Promos = () => {
     setSelectedPromo(null)
   }
 
+  const handleAddToCart = (promo, e) => {
+    if (e && e.stopPropagation) {
+      e.stopPropagation()
+    }
+    
+    if (!abierto) {
+      alert('Lo sentimos, estamos cerrados en este momento. Consulta nuestros horarios de atención.')
+      return
+    }
+    
+    addToCart({
+      ...promo,
+      categoria: 'Promos'
+    })
+  }
+
   return (
     <div className='container-promos' id='promos'>
       <div className="banner_promos">
@@ -75,12 +103,27 @@ const Promos = () => {
             </div>
             <div className="promo-footer">
               <span className='promo-precio'>${promo.precio.toLocaleString('es-AR')}</span>
-              <button className="promo-btn">Ver detalles</button>
+              <button 
+                className={`add-to-cart-btn-promo ${!abierto ? 'disabled' : ''}`}
+                onClick={(e) => handleAddToCart(promo, e)}
+                disabled={!abierto}
+              >
+                {abierto ? (
+                  <>
+                    <ShoppingCart size={18} />
+                    Agregar
+                  </>
+                ) : (
+                  <>
+                    <Lock size={18} />
+                    Cerrado
+                  </>
+                )}
+              </button>
             </div>
           </div>
         ))}
       </div>
-      
 
       {/* Modal de detalles */}
       {showModal && selectedPromo && (
@@ -95,7 +138,7 @@ const Promos = () => {
             <div className="modal-promo-badge">
               PROMO {selectedPromo.numero}
             </div>
-            <h2 className="modal-title">{selectedPromo.nombre}</h2>
+            <h2 className="modal-title-promo">{selectedPromo.nombre}</h2>
             <div className="modal-promo-description">
               <p className="modal-items">{selectedPromo.descripcion}</p>
               <p className="modal-detail">{selectedPromo.detalle}</p>
@@ -107,9 +150,38 @@ const Promos = () => {
             <div className="modal-delivery-badge">
               🛵 Delivery sin cargo
             </div>
-            <div className="modal-info">
-              <p>Para hacer tu pedido, contactanos por WhatsApp</p>
-            </div>
+            
+            {!abierto && (
+              <div className="modal-cerrado-aviso">
+                <Lock size={20} />
+                <p>Estamos cerrados. Consultá nuestros horarios de atención.</p>
+              </div>
+            )}
+            
+            <button 
+              className={`modal-add-cart ${!abierto ? 'disabled' : ''}`}
+              onClick={() => {
+                if (abierto) {
+                  handleAddToCart(selectedPromo)
+                  closeModal()
+                } else {
+                  alert('Lo sentimos, estamos cerrados en este momento.')
+                }
+              }}
+              disabled={!abierto}
+            >
+              {abierto ? (
+                <>
+                  <ShoppingCart size={20} />
+                  Agregar al carrito
+                </>
+              ) : (
+                <>
+                  <Lock size={20} />
+                  Cerrado
+                </>
+              )}
+            </button>
           </div>
         </div>
       )}

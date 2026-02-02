@@ -4,7 +4,7 @@ import './BtnWsp.css'
 const BtnWsp = () => {
   return (
     <div>
-    <a className="btn-wsp" href="https://wa.me/541151772724" target="_blank">
+    <a className="btn-wsp" href="https://wa.me/541171910505" target="_blank">
       <i className="uil uil-whatsapp"></i>
     </a>
     <a className="btn-tel" href="tel:+5421995972" target="_blank">

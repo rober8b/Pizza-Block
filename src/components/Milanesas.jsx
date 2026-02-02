@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Search, X } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Search, X, ShoppingCart, Lock } from 'lucide-react'
 import Milanesas_banner from '../assets/Milanesas_banner.png'
 import milanesasData from '../data/Milanesas-data'
 import './Milanesas.css'
@@ -7,12 +7,28 @@ import BannerSandwiches from '../assets/Milanesas_banner_2.png'
 import sandwichesData from '../data/Sandwiches-data'
 import fritasExtra_image from '../assets/extra_fritas-image.png'
 import papasData from '../data/Papas-data'
+import { useCart } from '../context/CartContext'
+import MilanesaConfigModal from './MilanesaConfigModal' 
+import SandwichConfigModal from './SandwichConfigModal'
+import { estaAbierto } from '../utils/HorariosService'
 
 const Milanesas = () => {
   const [searchMilanesas, setSearchMilanesas] = useState('')
   const [searchSandwiches, setSearchSandwiches] = useState('')
   const [searchPapas, setSearchPapas] = useState('')
   const [selectedItem, setSelectedItem] = useState(null)
+  const [milanesaToConfig, setMilanesaToConfig] = useState(null)
+  const [sandwichToConfig, setSandwichToConfig] = useState(null)
+  const [abierto, setAbierto] = useState(estaAbierto())
+  const { addToCart } = useCart()
+
+  // Verificar estado cada minuto
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAbierto(estaAbierto())
+    }, 60000)
+    return () => clearInterval(interval)
+  }, [])
 
   // Filtrar productos según búsqueda
   const filteredMilanesas = milanesasData.filter(producto =>
@@ -29,12 +45,58 @@ const Milanesas = () => {
     producto.nombre.toLowerCase().includes(searchPapas.toLowerCase())
   )
 
-  const openModal = (item) => {
-    setSelectedItem(item)
+  const handleAddToCart = (producto, categoria, e) => {
+    e.stopPropagation()
+    
+    if (!abierto) {
+      alert('Lo sentimos, estamos cerrados en este momento. Consulta nuestros horarios de atención.')
+      return
+    }
+    
+    if (categoria === 'Milanesas') {
+      setMilanesaToConfig({
+        ...producto,
+        categoria: categoria
+      })
+    } else if (categoria === 'Sandwiches') {
+      setSandwichToConfig({
+        ...producto,
+        categoria: categoria
+      })
+    } else {
+      addToCart({
+        ...producto,
+        categoria: categoria
+      })
+    }
   }
 
-  const closeModal = () => {
-    setSelectedItem(null)
+  const handleConfirmMilanesa = (configuredItem) => {
+    let descripcionCompleta = configuredItem.descripcion || ''
+    descripcionCompleta += `\n🥩 ${configuredItem.tipoCarne === 'carne' ? 'Carne' : 'Pollo'}`
+    
+    if (configuredItem.extraPapas) {
+      descripcionCompleta += `\n🍟 ${configuredItem.extraPapas.nombre}`
+    } else {
+      descripcionCompleta += '\n🍟 Papas incluidas'
+    }
+
+    addToCart({
+      ...configuredItem,
+      descripcion: descripcionCompleta.trim(),
+      precio: configuredItem.precioFinal
+    })
+
+    setMilanesaToConfig(null)
+  }
+
+  const handleConfirmSandwich = (configuredItem) => {
+    addToCart({
+      ...configuredItem,
+      precio: configuredItem.precioFinal
+    })
+
+    setSandwichToConfig(null)
   }
 
   return (
@@ -76,14 +138,30 @@ const Milanesas = () => {
           <div 
             key={id} 
             className='product-card'
-            onClick={() => openModal({nombre, descripcion, precio})}
+            onClick={() => setSelectedItem({id, nombre, descripcion, precio, categoria: 'Milanesas'})}
           >
             <div className="product-content">
               <h3 className='nombre-product'>{nombre}</h3>
-              {descripcion && <p className='descrip-product'>{descripcion}</p>}
-            </div>
-            <div className="product-price">
               <span className='precio-product'>${precio.toLocaleString('es-AR')}</span>
+            </div>
+            <div className="product-footer">
+              <button 
+                className={`add-to-cart-btn ${!abierto ? 'disabled' : ''}`}
+                onClick={(e) => handleAddToCart({id, nombre, descripcion, precio}, 'Milanesas', e)}
+                disabled={!abierto}
+              >
+                {abierto ? (
+                  <>
+                    <ShoppingCart size={18} />
+                    Agregar
+                  </>
+                ) : (
+                  <>
+                    <Lock size={18} />
+                    Cerrado
+                  </>
+                )}
+              </button>
             </div>
           </div>
         ))}
@@ -110,13 +188,30 @@ const Milanesas = () => {
           <div 
             key={id} 
             className='product-card product-card-simple'
-            onClick={() => openModal({nombre, descripcion: '', precio})}
+            onClick={() => setSelectedItem({id, nombre, descripcion: '', precio, categoria: 'Papas'})}
           >
             <div className="product-content">
               <h3 className='nombre-product'>{nombre}</h3>
-            </div>
-            <div className="product-price">
               <span className='precio-product'>${precio.toLocaleString('es-AR')}</span>
+            </div>
+            <div className="product-footer">
+              <button 
+                className={`add-to-cart-btn ${!abierto ? 'disabled' : ''}`}
+                onClick={(e) => handleAddToCart({id, nombre, precio}, 'Papas', e)}
+                disabled={!abierto}
+              >
+                {abierto ? (
+                  <>
+                    <ShoppingCart size={18} />
+                    Agregar
+                  </>
+                ) : (
+                  <>
+                    <Lock size={18} />
+                    Cerrado
+                  </>
+                )}
+              </button>
             </div>
           </div>
         ))}
@@ -143,14 +238,30 @@ const Milanesas = () => {
           <div 
             key={id} 
             className='product-card'
-            onClick={() => openModal({nombre, descripcion, precio})}
+            onClick={() => setSelectedItem({id, nombre, descripcion, precio, categoria: 'Sandwiches'})}
           >
             <div className="product-content">
               <h3 className='nombre-product'>{nombre}</h3>
-              {descripcion && <p className='descrip-product'>{descripcion}</p>}
-            </div>
-            <div className="product-price">
               <span className='precio-product'>${precio.toLocaleString('es-AR')}</span>
+            </div>
+            <div className="product-footer">
+              <button 
+                className={`add-to-cart-btn ${!abierto ? 'disabled' : ''}`}
+                onClick={(e) => handleAddToCart({id, nombre, descripcion, precio}, 'Sandwiches', e)}
+                disabled={!abierto}
+              >
+                {abierto ? (
+                  <>
+                    <ShoppingCart size={18} />
+                    Agregar
+                  </>
+                ) : (
+                  <>
+                    <Lock size={18} />
+                    Cerrado
+                  </>
+                )}
+              </button>
             </div>
           </div>
         ))}
@@ -164,11 +275,11 @@ const Milanesas = () => {
 
       {/* Modal de detalles */}
       {selectedItem && (
-        <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-overlay" onClick={() => setSelectedItem(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button 
               className="modal-close"
-              onClick={closeModal}
+              onClick={() => setSelectedItem(null)}
             >
               <X size={24} />
             </button>
@@ -180,11 +291,58 @@ const Milanesas = () => {
               <span className="price-label">Precio:</span>
               <span className="price-value">${selectedItem.precio.toLocaleString('es-AR')}</span>
             </div>
-            <div className="modal-info">
-              <p>Para hacer tu pedido, contactanos por WhatsApp</p>
-            </div>
+            
+            {!abierto && (
+              <div className="modal-cerrado-aviso">
+                <Lock size={20} />
+                <p>Estamos cerrados. Consultá nuestros horarios de atención.</p>
+              </div>
+            )}
+            
+            <button 
+              className={`modal-add-cart ${!abierto ? 'disabled' : ''}`}
+              onClick={() => {
+                if (abierto) {
+                  handleAddToCart(selectedItem, selectedItem.categoria, { stopPropagation: () => {} })
+                  setSelectedItem(null)
+                } else {
+                  alert('Lo sentimos, estamos cerrados en este momento.')
+                }
+              }}
+              disabled={!abierto}
+            >
+              {abierto ? (
+                <>
+                  <ShoppingCart size={20} />
+                  Agregar al carrito
+                </>
+              ) : (
+                <>
+                  <Lock size={20} />
+                  Cerrado
+                </>
+              )}
+            </button>
           </div>
         </div>
+      )}
+
+      {/* Modal de configuración de milanesa */}
+      {milanesaToConfig && (
+        <MilanesaConfigModal
+          item={milanesaToConfig}
+          onClose={() => setMilanesaToConfig(null)}
+          onConfirm={handleConfirmMilanesa}
+        />
+      )}
+
+      {/* Modal de configuración de sandwich */}
+      {sandwichToConfig && (
+        <SandwichConfigModal
+          item={sandwichToConfig}
+          onClose={() => setSandwichToConfig(null)}
+          onConfirm={handleConfirmSandwich}
+        />
       )}
     </div>
   )

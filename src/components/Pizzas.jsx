@@ -1,29 +1,45 @@
-import React, { useState } from 'react'
-import productos from '../data/Pizzas-data'
+import React, { useState, useEffect } from 'react'
+import PizzaData from '../data/Pizzas-data'
 import './Pizzas.css'
 import pizzas_banner from '../assets/pizzas_banner.png'
-import { Search, X } from 'lucide-react'
+import { Search, X, ShoppingCart, Lock } from 'lucide-react'
 import { useCart } from '../context/CartContext'
-import { ShoppingCart } from 'lucide-react'
+import { estaAbierto } from '../utils/HorariosService'
 
 const Pizzas = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedPizza, setSelectedPizza] = useState(null)
+  const [abierto, setAbierto] = useState(estaAbierto())
   const { addToCart } = useCart()
 
-  // Filtrar productos según búsqueda
-  const filteredProducts = productos.filter(producto =>
+  // Verificar estado cada minuto
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAbierto(estaAbierto())
+    }, 60000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const filteredProducts = PizzaData.filter(producto =>
     producto.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
     producto.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const handleAddToCart = (producto, e) => {
-  e.stopPropagation()
-  addToCart({
-    ...producto,
-    categoria: 'Milanesas' // Cambiar según el componente
-  })
-}
+    if (e && e.stopPropagation) {
+      e.stopPropagation()
+    }
+    
+    if (!abierto) {
+      alert('Lo sentimos, estamos cerrados en este momento. Consulta nuestros horarios de atención.')
+      return
+    }
+    
+    addToCart({
+      ...producto,
+      categoria: 'Pizzas'
+    })
+  }
 
   return (
     <div className='Pizzas-container' id='pizzas'>
@@ -67,18 +83,28 @@ const Pizzas = () => {
           >
             <div className="product-content">
               <h3 className='nombre-product'>{nombre}</h3>
-              <p className='descrip-product'>{descripcion}</p>
-            </div>
-            <div className="product-price">
               <span className='precio-product'>${precio.toLocaleString('es-AR')}</span>
             </div>
-            <button 
-              className="add-to-cart-btn"
-              onClick={(e) => handleAddToCart(producto, e)}
-            >
-              <ShoppingCart size={18} />
-              Agregar
-            </button>
+
+            <div className="product-footer">
+              <button 
+                className={`add-to-cart-btn ${!abierto ? 'disabled' : ''}`}
+                onClick={(e) => handleAddToCart({id, nombre, descripcion, precio}, e)}
+                disabled={!abierto}
+              >
+                {abierto ? (
+                  <>
+                    <ShoppingCart size={18} />
+                    Agregar
+                  </>
+                ) : (
+                  <>
+                    <Lock size={18} />
+                    Cerrado
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -105,9 +131,38 @@ const Pizzas = () => {
               <span className="price-label">Precio:</span>
               <span className="price-value">${selectedPizza.precio.toLocaleString('es-AR')}</span>
             </div>
-            <div className="modal-info">
-              <p>Para hacer tu pedido, contactanos por WhatsApp</p>
-            </div>
+            
+            {!abierto && (
+              <div className="modal-cerrado-aviso">
+                <Lock size={20} />
+                <p>Estamos cerrados. Consultá nuestros horarios de atención.</p>
+              </div>
+            )}
+            
+            <button 
+              className={`modal-add-cart ${!abierto ? 'disabled' : ''}`}
+              onClick={() => {
+                if (abierto) {
+                  handleAddToCart(selectedPizza)
+                  setSelectedPizza(null)
+                } else {
+                  alert('Lo sentimos, estamos cerrados en este momento.')
+                }
+              }}
+              disabled={!abierto}
+            >
+              {abierto ? (
+                <>
+                  <ShoppingCart size={20} />
+                  Agregar al carrito
+                </>
+              ) : (
+                <>
+                  <Lock size={20} />
+                  Cerrado
+                </>
+              )}
+            </button>
           </div>
         </div>
       )}

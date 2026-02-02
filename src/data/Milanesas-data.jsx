@@ -12,8 +12,8 @@ const milanesasData = [
     { id: 11, nombre: 'Rúcula y Jamón Crudo', descripcion: 'Salsa de tomate, mozzarella, rúcula natural y jamón crudo + fritas', precio: 40000 },
     { id: 12, nombre: 'Rúcula y Parmesano', descripcion: 'Salsa de tomate, mozzarella, rúcula natural y parmesano + fritas', precio: 37500 },
     { id: 13, nombre: 'Mila BLOCK', descripcion: 'Salsa de tomate, mozzarella, panceta, huevos fritos y papas fritas + porción de fritas', precio: 45000 },
-    { id: 14, nombre: 'Porción de Fritas', descripcion: '(Para Compartir)', precio: 10000 },
-    { id: 15, nombre: 'Fritas', descripcion: '(Media Porción)', precio: 8000 }
+    { id: 14, nombre: 'Porción de Fritas ', descripcion: '(Para Compartir)', precio: 10000 },
+    { id: 15, nombre: 'Media Porción de Fritas', descripcion: '(Media Porción)', precio: 8000 }
 ];
 
 export default milanesasData;

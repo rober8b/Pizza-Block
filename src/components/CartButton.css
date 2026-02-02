@@ -1,0 +1,91 @@
+.cart-float-button {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 165px;  /* ← +70px respecto al Tel */
+  right: 25px;
+  background: linear-gradient(135deg, #d32f2f, #ff5252);
+  border-radius: 50%;
+  border: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+  z-index: 100;
+  transition: 0.2s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    right: -100px;
+    opacity: 0;
+  }
+  to {
+    right: 20px;
+    opacity: 1;
+  }
+}
+
+.cart-float-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(211, 47, 47, 0.5);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #fff;
+  color: #d32f2f;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 2px solid #d32f2f;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Tablets y pantallas medianas */
+@media (max-width: 780px){
+  .cart-float-button {
+    width: 50px;
+    right: 15px;
+    height: 50px;
+    font-size: 26px;
+    bottom: 150px; 
+  }
+}
+
+/* Celulares chicos */
+@media (max-width: 480px){
+  .cart-float-button {
+    width: 40px;
+    right: 10px;
+    height: 40px;
+    font-size: 20px;
+    bottom: 125px; 
+  }
+
+  .cart-float-button svg{
+    width: 20px;
+    height: 20px;
+  }
+}
+
+

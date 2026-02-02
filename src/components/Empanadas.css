@@ -6,6 +6,11 @@
   scroll-margin-top: 80px;
 }
 
+.section-subtitle {
+  color: #a7a7a7;
+
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -21,11 +26,10 @@
 .empanadas_banner {
   text-align: center;
   margin-bottom: 2rem;
-
 }
 
 .empanadas_banner img {
-  width: 300px ;
+  width: 300px;
   max-width: 100%;
   height: auto;
   border-radius: 12px;
@@ -33,115 +37,27 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Header de sección */
-.section-header {
-  text-align: center;
-  margin: 2rem 0 1.5rem 0;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 0.5rem;
-  position: relative;
-  display: inline-block;
-  padding-bottom: 0.5rem;
-}
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(90deg, #d32f2f, #ff5252);
-  border-radius: 2px;
-}
-
-.section-subtitle {
-  font-size: 1.1rem;
-  color: #979797;
-  margin-top: 0.5rem;
-}
-
-/* Buscador */
-.search-container {
-  margin: 2rem 0;
-  display: flex;
-  justify-content: center;
-}
-
-.search-box {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-}
-
-.search-input {
-  width: 100%;
-  padding: 12px 45px 12px 45px;
-  border: 2px solid #e0e0e0;
-  border-radius: 25px;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  background-color: #fff;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #d32f2f;
-  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
-}
-
-.search-icon {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #666;
-  pointer-events: none;
-}
-
-.clear-search {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #666;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  transition: color 0.3s ease;
-}
-
-.clear-search:hover {
-  color: #d32f2f;
-}
 
 /* Grid de sabores */
 .sabores-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
-  margin: 2rem 0 3rem 0;
+  margin-top: 2rem;
 }
 
 .sabor-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  min-height: 125px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 20px;
+  border: 2px dashed #fff;
+  padding: 15px;
   cursor: pointer;
-  border: 2px solid transparent;
-  text-align: center;
-  animation: fadeInUp 0.5s ease;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 @keyframes fadeInUp {
@@ -157,10 +73,7 @@
 
 .sabor-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(211, 47, 47, 0.15);
-  border-color: #d32f2f;
 }
-
 .sabor-icon {
   width: 60px;
   height: 60px;
@@ -173,22 +86,43 @@
   color: white;
   transition: transform 0.3s ease;
 }
-
-.sabor-card:hover .sabor-icon {
-  transform: scale(1.1) rotate(10deg);
-}
-
 .sabor-nombre {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 0.5rem;
+  color: #fff;
+  margin-bottom: 0;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.sabor-descripcion {
+.sabor-precio {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+.add-to-cart-btn-empanada {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #d32f2f, #ff5252);
+  color: white;
+  border: none;
+  padding: 0.625rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
   font-size: 0.9rem;
-  color: #666;
-  line-height: 1.5;
+}
+
+.add-to-cart-btn-empanada:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
 }
 
 /* Precio */
@@ -273,23 +207,49 @@
 }
 
 
-.modal-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 1rem;
+.modal-icon img{
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #d32f2f, #ff5252);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 15px;
+  color: white;
 }
 
-.modal-description {
+
+.price-label {
   font-size: 1.1rem;
   color: #666;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+  font-weight: 500;
 }
+
+.price-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+.add-to-cart-btn-empanada.disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.add-to-cart-btn-empanada.disabled:hover {
+  background: #9ca3af;
+  transform: none;
+  box-shadow: none;
+}
+
 
 .modal-info {
   padding-top: 1rem;
   border-top: 1px solid #e0e0e0;
+  margin-top: 1rem;
 }
 
 .modal-info p {
@@ -298,27 +258,38 @@
 }
 
 /* Responsive */
+
+@media (max-width: 1100px) {
+  .sabores-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .sabores-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: 1fr;
   }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
+  
   .section-subtitle {
+    margin-top: 10px;
     font-size: 1rem;
   }
 
   .sabor-nombre {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+  }
+
+  .sabor-descripcion {
+    font-size: 0.8rem;
   }
 
   .sabor-icon {
     width: 50px;
     height: 50px;
+  }
+
+  .sabor-precio {
+    font-size: 1.3rem;
   }
 
   .modal-content {
@@ -330,27 +301,30 @@
     font-size: 1.6rem;
   }
 
-  .modal-icon {
+  .modal-icon img{
     width: 70px;
     height: 70px;
+  }
+
+  .price-value {
+    font-size: 1.6rem;
   }
 }
 
 @media (max-width: 480px) {
-  .sabores-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-
-  }
 
   .search-input {
     font-size: 14px;
     padding: 10px 40px;
   }
 
-
   .section-title {
     font-size: 1.7rem;
+  }
+
+  .add-to-cart-btn-empanada {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .empanadas-container {

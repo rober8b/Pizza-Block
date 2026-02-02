@@ -6,21 +6,25 @@ import Navbar from './components/Navbar'
 import Pizzas from './components/Pizzas'
 import Empanadas from './components/Empanadas'
 import Milanesas from './components/Milanesas'
+import Bebidas from './components/Bebidas'
 import Promos from './components/Promos'
 import Footer from './components/Footer'
 import BtnWsp from './components/BtnWsp'
 import Cart from './components/Cart'
 import CartButton from './components/CartButton'
 import Checkout from './pages/Checkout'
+import HorariosBanner from './components/HorariosBanner'
 
 function HomePage() {
   return (
     <>
       <Navbar />
+      <HorariosBanner />
       <Home />
       <Pizzas />
       <Empanadas />
       <Milanesas />
+      <Bebidas />
       <Promos />
       <Footer />
     </>

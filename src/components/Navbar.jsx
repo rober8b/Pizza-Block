@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import './Navbar.css'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Home, Pizza, Tags, BottleWine } from 'lucide-react'
+import { Icon } from '@iconify/react'
+import EmpanadaIcon from '../assets/empanadas.png'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -8,11 +10,12 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false)
 
   const menuItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'pizzas', label: 'Pizzas' },
-    { id: 'empanadas', label: 'Empanadas' },
-    { id: 'milanesas', label: 'Milanesas' },
-    { id: 'promos', label: 'Promos' }
+    { id: 'home', label: 'Home', icon: <Home size={18} /> },
+    { id: 'pizzas', label: 'Pizzas', icon: <Pizza size={18} /> },
+    { id: 'empanadas', label: 'Empanadas', icon: <img src={EmpanadaIcon} width="20" /> },
+    { id: 'milanesas', label: 'Milanesas', icon: <Icon icon="mdi:food-steak" width="20" /> },
+    { id: 'bebidas', label: 'Bebidas', icon:  <BottleWine size={18} /> },
+    { id: 'promos', label: 'Promos', icon: <Tags size={18} /> }
   ]
 
   useEffect(() => {
@@ -69,8 +72,9 @@ const Navbar = () => {
               <button
                 onClick={() => scrollToSection(item.id)}
                 className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
-              >
-                {item.label}
+              > 
+              {item.icon}
+              <span>{item.label}</span>
               </button>
             </li>
           ))}
@@ -95,7 +99,8 @@ const Navbar = () => {
                 onClick={() => scrollToSection(item.id)}
                 className={`mobile-link ${activeSection === item.id ? 'active' : ''}`}
               >
-                {item.label}
+                {item.icon}
+                <span>{item.label}</span>
               </button>
             </li>
           ))}

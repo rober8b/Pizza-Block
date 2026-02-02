@@ -1,4 +1,4 @@
-const productos = [
+const PizzaData = [
     { id: 1, nombre: 'Mozzarella', descripcion: 'Salsa de tomate y mozzarella', precio: 15000 },
     { id: 2, nombre: 'Doble Mozza', descripcion: 'Salsa de tomate y doble mozzarella', precio: 22500 },
     { id: 3, nombre: 'Mozza c/Jamón', descripcion: 'Salsa de tomate, mozzarella y jamón', precio: 20000 },
@@ -28,4 +28,4 @@ const productos = [
     { id: 27, nombre: 'Faina (porción)', descripcion: '', precio: 2000 }
 ];
 
-export default productos;
+export default PizzaData;
