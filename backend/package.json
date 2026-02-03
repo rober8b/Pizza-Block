@@ -7,11 +7,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": [
-    "pizza",
-    "backend",
-    "whatsapp"
-  ],
+  "keywords": ["pizza", "backend", "whatsapp"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
