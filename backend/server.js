@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { Client, MessageMedia, RemoteAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const mongoose = require('mongoose');
+const QRCode = require('qrcode');
 
 dotenv.config();
 
@@ -16,20 +16,6 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // ============================================
-// MONGODB - Guardar sesión de WhatsApp
-// ============================================ 
-const { MongoStore } = require('wwebjs-mongo');
-const mongoose = require('mongoose');
-
-let store;
-
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('✅ MongoDB conectado');
-    store = new MongoStore({ mongoose: mongoose });
-  })
-  .catch(err => console.error('❌ Error conectando MongoDB:', err));
-// ============================================
 // CONFIGURACIÓN DE WHATSAPP
 // ============================================
 
@@ -37,13 +23,13 @@ let whatsappClient;
 let isWhatsAppReady = false;
 let reconnectAttempts = 0;
 const MAX_RECONNECT_ATTEMPTS = 5;
+let currentQR = null; // ← AGREGÁ ESTA LÍNEA
 
 function createWhatsAppClient() {
   whatsappClient = new Client({
-    authStrategy: new RemoteAuth({
-      store: store,
+    authStrategy: new LocalAuth({
       clientId: 'pizza-block-client',
-      backupSyncIntervalMs: 60000
+      dataPath: './.wwebjs_auth'
     }),
     puppeteer: {
       headless: true,
@@ -69,6 +55,7 @@ function createWhatsAppClient() {
 
   // Evento: QR Code generado
   whatsappClient.on('qr', (qr) => {
+    currentQR = qr;
     console.log('\n📱 ESCANEA ESTE QR CON TU WHATSAPP:\n');
     qrcode.generate(qr, { small: true });
     console.log('\n👆 Abre WhatsApp > Dispositivos vinculados > Vincular dispositivo\n');
@@ -83,11 +70,6 @@ function createWhatsAppClient() {
     console.log('✅ WhatsApp Web listo para enviar mensajes');
     isWhatsAppReady = true;
     reconnectAttempts = 0;
-  });
-
-  // Evento clave: cuando la sesión se guarda exitosamente
-  whatsappClient.on('remote_session_saved', () => {
-    console.log('💾 Sesión guardada exitosamente en MongoDB');
   });
 
   whatsappClient.on('disconnected', (reason) => {
