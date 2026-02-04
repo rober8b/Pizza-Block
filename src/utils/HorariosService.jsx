@@ -5,7 +5,7 @@ const HORARIOS_ATENCION = {
   // 0 = Domingo, 1 = Lunes, ... 6 = Sábado
   lunes: { dia: 1, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
   martes: { dia: 2, horarios: [{ inicio: '19:00', fin: '24:00' }] },
-  miercoles: { dia: 3, horarios: [] }, // CERRADO
+  miercoles: { dia: 3, horarios: [{ inicio: '10:30', fin: '15:30' }] }, // CERRADO
   jueves: { dia: 4, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '20:00' }] },
   viernes: { dia: 5, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
   sabado: { dia: 6, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
