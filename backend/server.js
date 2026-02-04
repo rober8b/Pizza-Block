@@ -48,7 +48,9 @@ function createWhatsAppClient() {
   // Evento: QR Code generado
   whatsappClient.on('qr', (qr) => {
     currentQR = qr;
-    console.log('\n📱 QR generado. Abrí /api/whatsapp/qr para escanearlo\n');
+    console.log('\n📱 ESCANEA ESTE QR CON TU WHATSAPP:\n');
+    qrcode.generate(qr, { small: true });
+    console.log('\n👆 Abre WhatsApp > Dispositivos vinculados > Vincular dispositivo\n');
   });
 
   whatsappClient.on('authenticated', () => {
@@ -213,25 +215,6 @@ async function sendWhatsAppImage(phoneNumber, base64Image, caption) {
 // ============================================
 // RUTAS DE LA API
 // ============================================
-app.get('/api/whatsapp/qr', async (req, res) => {
-  if (!currentQR) {
-    return res.status(404).json({ message: 'QR no disponible todavía' });
-  }
-
-  try {
-    const qrImage = await QRCode.toDataURL(currentQR);
-    const img = Buffer.from(qrImage.split(',')[1], 'base64');
-
-    res.writeHead(200, {
-      'Content-Type': 'image/png',
-      'Content-Length': img.length
-    });
-    res.end(img);
-  } catch (err) {
-    console.error('❌ Error generando QR:', err);
-    res.status(500).json({ error: 'Error generando QR' });
-  }
-});
 
 // Health check - Railway lo usa para saber si el server está vivo
 app.get('/health', (req, res) => {
