@@ -24,17 +24,17 @@ const Empanadas = () => {
 
   // Lista de sabores de empanadas
   const sabores = [
-    { id: 1, nombre: 'Jamón y Mozzarella', descripcion: 'Jamón cocido y queso mozzarella', precio: 2000 },
-    { id: 2, nombre: 'Cebolla y Mozzarella', descripcion: 'Cebolla caramelizada con mozzarella', precio: 2000 },
-    { id: 3, nombre: 'Salchicha y Mozzarella', descripcion: 'Salchicha con queso mozzarella', precio: 2000 },
-    { id: 4, nombre: 'Carne Picante', descripcion: 'Carne picada con ají y especias', precio: 2200 },
-    { id: 5, nombre: 'Carne', descripcion: 'Carne picada, cebolla y especias', precio: 2000 },
-    { id: 6, nombre: 'Pollo', descripcion: 'Pollo desmenuzado con especias', precio: 2000 },
-    { id: 7, nombre: 'Caprese', descripcion: 'Tomate, mozzarella y albahaca', precio: 2200 },
-    { id: 8, nombre: 'Roquefort', descripcion: 'Queso roquefort cremoso', precio: 2300 },
-    { id: 9, nombre: 'Verdura', descripcion: 'Acelga, cebolla y especias', precio: 1800 },
-    { id: 10, nombre: 'Humita', descripcion: 'Choclo molido con salsa blanca', precio: 2000 },
-    { id: 11, nombre: 'Calabresa', descripcion: 'Calabresa con especias', precio: 2200 }
+    { id: 1, nombre: 'Jamón y Mozzarella', descripcion: 'Jamón cocido y queso mozzarella', precio: 2750 },
+    { id: 2, nombre: 'Cebolla y Mozzarella', descripcion: 'Cebolla caramelizada con mozzarella', precio: 2750 },
+    { id: 3, nombre: 'Salchicha y Mozzarella', descripcion: 'Salchicha con queso mozzarella', precio: 2750 },
+    { id: 4, nombre: 'Carne Picante', descripcion: 'Carne picada con ají y especias', precio: 2750 },
+    { id: 5, nombre: 'Carne', descripcion: 'Carne picada, cebolla y especias', precio: 2750 },
+    { id: 6, nombre: 'Pollo', descripcion: 'Pollo desmenuzado con especias', precio: 2750 },
+    { id: 7, nombre: 'Caprese', descripcion: 'Tomate, mozzarella y albahaca', precio: 2750},
+    { id: 8, nombre: 'Roquefort', descripcion: 'Queso roquefort cremoso', precio: 2750 },
+    { id: 9, nombre: 'Verdura', descripcion: 'Acelga, cebolla y especias', precio: 2750 },
+    { id: 10, nombre: 'Humita', descripcion: 'Choclo molido con salsa blanca', precio: 2750 },
+    { id: 11, nombre: 'Calabresa', descripcion: 'Calabresa con especias', precio: 2750 }
   ]
 
   const filteredSabores = sabores.filter(sabor =>
