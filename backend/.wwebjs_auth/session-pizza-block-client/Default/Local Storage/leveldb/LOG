@@ -1,3 +1,6 @@
-2026/01/31-19:40:02.136 9fbc Reusing MANIFEST C:\Users\rober\Desktop\Pizza-Block\backend\.wwebjs_auth\session-pizza-block-client\Default\Local Storage\leveldb/MANIFEST-000001
-2026/01/31-19:40:02.141 9fbc Recovering log #44
-2026/01/31-19:40:02.141 9fbc Reusing old log C:\Users\rober\Desktop\Pizza-Block\backend\.wwebjs_auth\session-pizza-block-client\Default\Local Storage\leveldb/000044.log 
+2026/02/03-23:24:02.520 16218 Reusing MANIFEST C:\Users\rober\Desktop\Pizza-Block\backend\.wwebjs_auth\session-pizza-block-client\Default\Local Storage\leveldb/MANIFEST-000001
+2026/02/03-23:24:02.526 16218 Recovering log #44
+2026/02/03-23:24:02.527 16218 Reusing old log C:\Users\rober\Desktop\Pizza-Block\backend\.wwebjs_auth\session-pizza-block-client\Default\Local Storage\leveldb/000044.log 
+2026/02/03-23:26:29.549 167f4 Level-0 table #48: started
+2026/02/03-23:26:29.552 167f4 Level-0 table #48: 18503 bytes OK
+2026/02/03-23:26:29.553 167f4 Delete type=0 #44
