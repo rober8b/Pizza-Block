@@ -133,7 +133,7 @@ const Checkout = () => {
         envio: formData.tipoEntrega === 'delivery' ? COSTO_ENVIO : 0
       }
 
-      const response = await fetch('http://localhost:5000/api/pedido', {
+      const response = await fetch('http://159.89.140.82:8080/api/pedido', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
