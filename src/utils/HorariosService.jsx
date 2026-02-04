@@ -5,12 +5,13 @@ const HORARIOS_ATENCION = {
   // 0 = Domingo, 1 = Lunes, ... 6 = Sábado
   lunes: { dia: 1, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
   martes: { dia: 2, horarios: [{ inicio: '19:00', fin: '24:00' }] },
-  miercoles: { dia: 3, horarios: [{ inicio: '10:30', fin: '12:30' }] }, // CERRADO
-  jueves: { dia: 4, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '20:00' }] },
+  miercoles: { dia: 3, horarios: [] }, // CERRADO
+  jueves: { dia: 4, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
   viernes: { dia: 5, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
   sabado: { dia: 6, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
   domingo: { dia: 0, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
 };
+const MODO_PRUEBA = true;
 
 // Nombres de los días en español
 const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -27,22 +28,22 @@ const horaAMinutos = (horaStr) => {
  * Verifica si el negocio está abierto en este momento
  */
 export const estaAbierto = () => {
+  if (MODO_PRUEBA) return true;
+
   const ahora = new Date();
-  const diaActual = ahora.getDay(); // 0-6
+  const diaActual = ahora.getDay();
   const horaActual = ahora.getHours();
   const minutosActual = ahora.getMinutes();
   const minutosDesdeMedianoche = horaActual * 60 + minutosActual;
 
-  // Buscar configuración del día actual
   const configuracionDia = Object.values(HORARIOS_ATENCION).find(
     config => config.dia === diaActual
   );
 
   if (!configuracionDia || configuracionDia.horarios.length === 0) {
-    return false; // Día cerrado
+    return false;
   }
 
-  // Verificar si está en alguno de los rangos horarios
   return configuracionDia.horarios.some(horario => {
     const inicioMinutos = horaAMinutos(horario.inicio);
     const finMinutos = horaAMinutos(horario.fin);
