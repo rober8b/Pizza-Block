@@ -133,7 +133,7 @@ const Checkout = () => {
         envio: formData.tipoEntrega === 'delivery' ? COSTO_ENVIO : 0
       }
 
-      const response = await fetch('https://mold-byte-beverages-caps.trycloudflare.com/api/pedido', {
+      const response = await fetch('https://stayed-conversion-divine-offers.trycloudflare.com/api/pedido', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
