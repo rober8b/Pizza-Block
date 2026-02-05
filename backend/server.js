@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // WHATSAPP CLIENT
 // =====================
 let whatsappClient = null;
+let whatsappReady = false;
 
 function initWhatsApp() {
   whatsappClient = new Client({
@@ -43,17 +44,18 @@ function initWhatsApp() {
     qrcode.generate(qr, { small: true });
   });
 
-  whatsappClient.on('ready', () => {
-    console.log('✅ WhatsApp CONNECTED y listo para enviar mensajes');
-  });
-
   whatsappClient.on('authenticated', () => {
     console.log('🔐 WhatsApp autenticado');
   });
 
+  whatsappClient.on('ready', () => {
+    whatsappReady = true;
+    console.log('✅ WhatsApp CONNECTED y listo para enviar mensajes');
+  });
+
   whatsappClient.on('disconnected', (reason) => {
+    whatsappReady = false;
     console.log('⚠️ WhatsApp desconectado:', reason);
-    // NO reconectamos automáticamente (PM2 se encarga)
   });
 
   whatsappClient.initialize();
@@ -76,12 +78,14 @@ async function formatPhoneNumber(phone) {
   return cleaned + '@c.us';
 }
 
-async function ensureWhatsAppConnected() {
-  const state = await whatsappClient.getState();
-  console.log('📡 Estado WhatsApp:', state);
+async function waitForWhatsAppReady(timeoutMs = 20000) {
+  const start = Date.now();
 
-  if (state !== 'CONNECTED') {
-    throw new Error('WhatsApp NO conectado. Estado: ' + state);
+  while (!whatsappReady) {
+    if (Date.now() - start > timeoutMs) {
+      throw new Error('WhatsApp no está listo (timeout)');
+    }
+    await new Promise((r) => setTimeout(r, 500));
   }
 }
 
@@ -89,29 +93,23 @@ async function ensureWhatsAppConnected() {
 // API ROUTES
 // =====================
 app.get('/', (req, res) => {
-  res.json({
-    message: 'Pizza Block API funcionando',
-  });
+  res.json({ message: 'Pizza Block API funcionando' });
 });
 
-app.get('/api/whatsapp/status', async (req, res) => {
-  try {
-    const state = await whatsappClient.getState();
-    res.json({ status: state });
-  } catch {
-    res.json({ status: 'DISCONNECTED' });
-  }
+app.get('/api/whatsapp/status', (req, res) => {
+  res.json({ ready: whatsappReady });
 });
 
 app.post('/api/pedido', async (req, res) => {
   try {
-    const { cliente, pedido, total, envio, comprobante } = req.body;
+    const { cliente, pedido, total, comprobante } = req.body;
 
     console.log('\n📦 NUEVO PEDIDO');
     console.log(`Cliente: ${cliente.nombre} ${cliente.apellido}`);
     console.log(`Total: $${total.total}`);
 
-    await ensureWhatsAppConnected();
+    // ⏳ ESPERAMOS a que WhatsApp esté READY
+    await waitForWhatsAppReady();
 
     const numeroDestino =
       process.env.WHATSAPP_NUMBER || '549XXXXXXXXXX';
@@ -139,8 +137,8 @@ app.post('/api/pedido', async (req, res) => {
     }
 
     console.log('✅ Pedido enviado por WhatsApp');
-
     res.json({ success: true });
+
   } catch (err) {
     console.error('❌ Error pedido:', err.message);
     res.json({
