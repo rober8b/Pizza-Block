@@ -112,7 +112,7 @@ app.post('/api/pedido', async (req, res) => {
     await waitForWhatsAppReady();
 
     const numeroDestino =
-      process.env.WHATSAPP_NUMBER || '549XXXXXXXXXX';
+      process.env.WHATSAPP_NUMBER || '5491125128321';
 
     let mensaje = `🍕 *NUEVO PEDIDO*\n\n`;
     mensaje += `👤 ${cliente.nombre} ${cliente.apellido}\n`;
