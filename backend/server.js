@@ -53,6 +53,11 @@ function initWhatsApp() {
     console.log('✅ WhatsApp CONNECTED y listo para enviar mensajes');
   });
 
+  // AGREGAR ESTE NUEVO EVENTO:
+  whatsappClient.on('loading_screen', (percent, message) => {
+    console.log(`⏳ Cargando WhatsApp: ${percent}% - ${message}`);
+  });
+
   whatsappClient.on('disconnected', (reason) => {
     whatsappReady = false;
     console.log('⚠️ WhatsApp desconectado:', reason);
