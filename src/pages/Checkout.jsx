@@ -152,7 +152,7 @@ const Checkout = () => {
         setPendingOrderData(null)
         setModalInfo({
           title: "¡Pedido realizado con éxito! 🎉",
-          message: "Tu pedido fue enviado correctamente. En breve nos contactamos por WhatsApp.",
+          message: "Tu pedido fue recibido. ¡En breve comenzamos a prepararlo!",
           success: true
         }) 
         setModalOpen(true)
