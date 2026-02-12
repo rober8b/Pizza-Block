@@ -399,8 +399,8 @@ const Checkout = () => {
                     <div className="form-section info-section">
                       <h3><Store size={20} /> Dirección del Local</h3>
                       <div className="local-info">
-                        <p><strong>📍 Dirección:</strong> Av. Ejemplo 1234, Buenos Aires</p>
-                        <p><strong>🕒 Horario de retiro:</strong> Lun-Dom 12-16hs y 19-23hs (excepto Miércoles)</p>
+                        <p><strong>📍 Dirección:</strong> Av Pedro Diaz 905 - Hurlingham </p>
+                        <p><strong>🕒 Horario de retiro:</strong> Lun-Dom 11-15:30hs y 19-24hs (excepto Miércoles)</p>
                         <p className="info-note">Te avisaremos por WhatsApp cuando tu pedido esté listo para retirar</p>
                       </div>
                     </div>
