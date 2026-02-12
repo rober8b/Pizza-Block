@@ -133,7 +133,7 @@ const Checkout = () => {
         envio: formData.tipoEntrega === 'delivery' ? COSTO_ENVIO : 0
       }
 
-      const response = await fetch('/api/pedido', {
+      const response = await fetch('/api/pedido/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
