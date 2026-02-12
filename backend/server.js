@@ -24,11 +24,11 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // =====================
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: false,
+  port: 587,  // ← Cambia a 587
+  secure: false,  // ← Cambia a false
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS.replace(/\s/g, ''), // Remueve espacios
+    pass: process.env.EMAIL_PASS.replace(/\s/g, ''),
   },
 });
 
