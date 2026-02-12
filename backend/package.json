@@ -25,5 +25,11 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://159.89.140.82:8080/api/:path*"
+    }
+  ]
 }
