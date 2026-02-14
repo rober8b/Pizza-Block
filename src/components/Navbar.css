@@ -35,17 +35,6 @@
     width: 120px;
 }
 
-/* Banner MP fijo dentro del header, a la izquierda */
-.mp-banner-fixed {
-  position: absolute;
-  left: 16px; /* ajustá este valor si tu header tiene más/menos padding */
-  top: 40%;
-  transform: translateY(-50%);
-  width: 180px !important;  
-  height: auto;    
-  z-index: 50;
-  pointer-events: none;  /* no interfiere con clicks si está encima de algo */
-}
 
 .navbar_nav ul {
     list-style-type: none;
