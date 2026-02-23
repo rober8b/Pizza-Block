@@ -7,14 +7,8 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .pizzas_banner {
@@ -29,7 +23,6 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Headers de sección */
 .section-header {
   text-align: center;
   margin: 2rem 0 1.5rem 0;
@@ -56,7 +49,6 @@
   border-radius: 2px;
 }
 
-/* Buscador */
 .search-container {
   margin: 2rem 0;
   display: flex;
@@ -110,11 +102,8 @@
   transition: color 0.3s ease;
 }
 
-.clear-search:hover {
-  color: #d32f2f;
-}
+.clear-search:hover { color: #d32f2f; }
 
-/* Grid de productos */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -207,7 +196,6 @@
   opacity: 0.7;
 }
 
-/* Sin resultados */
 .no-results {
   text-align: center;
   padding: 3rem;
@@ -215,7 +203,7 @@
   font-size: 1.1rem;
 }
 
-/* Modal */
+/* ── Modal ── */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -226,40 +214,33 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
   z-index: 1000;
   animation: fadeInModal 0.3s ease;
   padding: 1rem;
 }
 
 @keyframes fadeInModal {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-content {
   background: white;
-  padding: 2.5rem;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
   border-radius: 16px;
   max-width: 500px;
-  width: 100%;
+  width: calc(100% - 2rem);
   position: relative;
   animation: slideUp 0.3s ease;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 @keyframes slideUp {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .modal-close {
@@ -285,18 +266,21 @@
   transform: rotate(90deg);
 }
 
+/* ── Títulos sin padding lateral propio — el modal ya tiene el padding ── */
 .modal-title {
   font-size: 2rem;
   font-weight: 700;
   color: #333;
-  padding: 2.5rem 1.5rem 0.5rem 1.5rem;
+  padding: 1.5rem 0 0.5rem 0;
+  margin: 0;
 }
 
 .modal-description {
   font-size: 1.1rem;
   color: #666;
   line-height: 1.6;
-  padding: 0.5rem 1.5rem 1rem 1.5rem;
+  padding: 0.5rem 0 1rem 0;
+  margin: 0;
 }
 
 .modal-price {
@@ -321,6 +305,53 @@
   color: #d32f2f;
 }
 
+/* ── Selector tipo pizza ── */
+.pizza-tipo-selector {
+  margin: 16px 0;
+  width: 100%;
+}
+
+.pizza-tipo-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 10px;
+  text-align: center;
+  display: block;
+}
+
+.pizza-tipo-options {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.pizza-tipo-btn {
+  flex: 1;
+  padding: 10px;
+  margin: 10px 0 0 10px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #374151;
+}
+
+.pizza-tipo-btn:hover {
+  border-color: #d32f2f;
+  color: #d32f2f;
+}
+
+.pizza-tipo-btn.selected {
+  border-color: #d32f2f;
+  background: #fff0f0;
+  color: #d32f2f;
+}
+
+/* ── Botón agregar ── */
 .modal-add-cart {
   width: 100%;
   display: flex;
@@ -336,9 +367,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1.1rem;
-  margin: 0 auto;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 10px;
   max-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
 }
 
 .modal-add-cart:hover:not(.disabled) {
@@ -379,103 +413,26 @@
   margin: 0;
 }
 
-.pizza-tipo-label {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.pizza-tipo-selector {
-  margin: 16px 0;
-  width: 100%;
-}
-
-.pizza-tipo-options {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.pizza-tipo-btn {
-  flex: 1;
-  min-width: 0;
-  padding: 10px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  background: white;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: #374151;
-}
-
-.pizza-tipo-btn:hover {
-  border-color: #e94560;
-  color: #e94560;
-}
-
-.pizza-tipo-btn.selected {
-  border-color: #e94560;
-  background: #fff0f3;
-  color: #e94560;
-}
+/* ── Responsive ── */
 @media (max-width: 1100px) {
   .products-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Responsive */
 @media (max-width: 780px) {
-  .products-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .nombre-product {
-    font-size: 1.2rem;
-  }
-
-  .precio-product {
-    font-size: 1.3rem;
-  }
-
-  .add-to-cart-btn {
-    padding: 0.625rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .search-input {
-    font-size: 14px;
-    padding: 10px 40px;
-  }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .modal-content {
-    padding: 2rem;
-  }
-
-  .modal-title {
-    font-size: 1.6rem;
-  }
-
-  .price-value {
-    font-size: 1.6rem;
-  }
+  .products-grid { grid-template-columns: 1fr; }
+  .nombre-product { font-size: 1.2rem; }
+  .precio-product { font-size: 1.3rem; }
+  .add-to-cart-btn { padding: 0.625rem 1rem; font-size: 0.9rem; }
+  .search-input { font-size: 14px; padding: 10px 40px; }
+  .section-title { font-size: 2rem; }
+  .modal-content { padding: 2rem; }
+  .modal-title { font-size: 1.6rem; }
+  .price-value { font-size: 1.6rem; }
 }
 
 @media (max-width: 480px) {
-  .Pizzas-container {
-    padding: 1.5rem 0.75rem;
-  }
-
-  .section-title {
-    font-size: 1.8rem;
-  }
+  .Pizzas-container { padding: 1.5rem 0.75rem; }
+  .section-title { font-size: 1.8rem; }
 }
