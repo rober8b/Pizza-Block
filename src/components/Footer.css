@@ -33,12 +33,14 @@
 .footer_direc h6{
     margin-bottom: 5px;
     text-align: center;
+    color: #fff;
     text-decoration: underline #fff;
     font-size: 26px;
     margin-top: 20px !important;
 }
 
 .footer_direc p{
+    color: #a7a7a7;
     margin-top: 5px;
     padding-left: 10px;
     font-size: 20px;
@@ -58,6 +60,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
 .copy-text{

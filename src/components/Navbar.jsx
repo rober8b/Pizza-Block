@@ -1,42 +1,120 @@
+import React, { useState, useEffect } from 'react'
 import './Navbar.css'
-import logo from '../assets/logo.png';
-import React, { useEffect, useState } from 'react';
+import { Menu, X, Home, Pizza, Tags, BottleWine } from 'lucide-react'
+import { Icon } from '@iconify/react'
+import EmpanadaIcon from '../assets/empanadas.png'
 
-function Navbar() {
-  const [isSticky, setIsSticky] = useState(false);
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
+  const [scrolled, setScrolled] = useState(false)
+
+  const menuItems = [
+    { id: 'home', label: 'Home', icon: <Home size={18} /> },
+    { id: 'pizzas', label: 'Pizzas', icon: <Pizza size={18} /> },
+    { id: 'empanadas', label: 'Empanadas', icon: <img src={EmpanadaIcon} width="20" /> },
+    { id: 'milanesas', label: 'Milanesas', icon: <Icon icon="mdi:food-steak" width="20" /> },
+    { id: 'bebidas', label: 'Bebidas', icon:  <BottleWine size={18} /> },
+    { id: 'promos', label: 'Promos', icon: <Tags size={18} /> }
+  ]
 
   useEffect(() => {
     const handleScroll = () => {
-      const isTop = window.scrollY < 100;
-      setIsSticky(!isTop);
-    };
+      // Efecto de scroll en navbar
+      setScrolled(window.scrollY > 50)
 
-    window.addEventListener('scroll', handleScroll);
+      // Detectar sección activa
+      const sections = menuItems.map(item => item.id)
+      for (const section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
+    }
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const offset = 80
+      const bodyRect = document.body.getBoundingClientRect().top
+      const elementRect = element.getBoundingClientRect().top
+      const elementPosition = elementRect - bodyRect
+      const offsetPosition = elementPosition - offset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    }
+    setIsOpen(false)
+  }
 
   return (
-    <div>
-        <div className="header">
-            <div className="logo-container">
-                 <img src={logo} alt="Logo Pizza Block" />
-            </div>
-          <div className="navbar">
-            <nav className={isSticky ? 'navbar_nav sticky' : 'navbar_nav'}>
-              <ul>
-                <li><a href="#pizzas">Pizzas</a></li>
-                <div className='linea'>|</div>
-                <li><a href="#empanadas">Empanadas</a></li>
-                <div className='linea'>|</div>
-                <li><a href="#milanesas">Milanesas</a></li>
-              </ul>
-            </nav>
-          </div>
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      <div className="navbar-container">
+        <div className="navbar-logo">
+          <h1>Pizza Block</h1>
         </div>
-    </div>
+
+        {/* Menu Desktop */}
+        <ul className="navbar-menu desktop">
+          {menuItems.map(item => (
+            <li key={item.id}>
+              <button
+                onClick={() => scrollToSection(item.id)}
+                className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
+              > 
+              {item.icon}
+              <span>{item.label}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        {/* Botón Hamburguesa */}
+        <button 
+          className="hamburger"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Menu Mobile */}
+      <div className={`mobile-menu ${isOpen ? 'open' : ''}`}>
+        <ul>
+          {menuItems.map(item => (
+            <li key={item.id}>
+              <button
+                onClick={() => scrollToSection(item.id)}
+                className={`mobile-link ${activeSection === item.id ? 'active' : ''}`}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Overlay para cerrar menu mobile */}
+      {isOpen && (
+        <div 
+          className="mobile-overlay"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+    </nav>
   )
 }
 

@@ -35,12 +35,12 @@ const Footer = () => {
                     </a>
 
                     <a 
-                    href="https://wa.me/541151772724" 
+                    href="https://wa.me/541171910505" 
                     className="home__social-icon whatsapp" 
                     target="_blank"
                     >
                     <i className="uil uil-whatsapp-alt"></i>
-                    <p>11-5177-2724</p>
+                    <p>11-7191-0505</p>
                     </a>
 
                     <a 
@@ -70,7 +70,7 @@ const Footer = () => {
 
         <div className="copy_container">
             <div className="copy-text">
-                <p>© Pizza Block 2023</p>
+                <p>© Pizza Block 2025</p>
             </div>
         </div>
     </div>

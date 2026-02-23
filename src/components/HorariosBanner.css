@@ -1,0 +1,572 @@
+.horarios-banner {
+  position: sticky;
+  top: 70px;
+  z-index: 998;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.4s ease;
+}
+
+.horarios-banner.visible {
+  animation: slideDown 0.4s ease;
+}
+
+.horarios-banner.hidden {
+  animation: slideUp 0.4s ease forwards;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.horarios-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.horarios-mensaje {
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  flex: 1;
+  text-align: center;
+}
+
+.horarios-info-btn,
+.horarios-close-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.horarios-info-btn:hover,
+.horarios-close-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}
+
+.horarios-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Botón flotante cuando el banner está oculto */
+.horarios-floating-btn {
+  position: fixed;
+  top: 100px;
+  right: 25px;
+  z-index: 998;
+  animation: fadeIn 0.3s ease;
+}
+
+.horarios-toggle-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d32f2f, #ff5252);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
+  transition: all 0.3s ease;
+}
+
+.horarios-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.5);
+}
+
+.horarios-toggle-btn svg{
+  width: 30px;
+  height: 30px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Tipo Success - Abierto */
+.horarios-banner.success {
+  background: rgba(76, 175, 80, 0.95);
+  color: white;
+  box-shadow: 0 2px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* Tipo Warning - Cierra pronto o abre hoy */
+.horarios-banner.warning {
+  background: rgba(255, 152, 0, 0.95);
+  color: white;
+  box-shadow: 0 2px 12px rgba(255, 152, 0, 0.3);
+}
+
+/* Tipo Error - Cerrado */
+.horarios-banner.error {
+  background: rgba(96, 96, 96, 0.95);
+  color: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal de Horarios */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeInModal 0.3s ease;
+  padding: 1rem;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-horarios-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  animation: slideUpModal 0.3s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideUpModal {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-horarios-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  color: #d32f2f;
+}
+
+.modal-horarios-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.horarios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.horario-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
+  transition: all 0.3s ease;
+}
+
+.horario-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.horario-item.cerrado {
+  border-left-color: #999;
+  opacity: 0.5;
+}
+
+.horario-dia {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.horario-horas {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.horarios-nota {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e0e0e0;
+  color: #666;
+}
+
+.horarios-nota p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .horarios-banner {
+    top: 60px;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .horarios-banner-content {
+    gap: 0.5rem;
+  }
+
+  .horarios-banner-content svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .horarios-mensaje {
+    font-size: 0.85rem;
+  }
+
+  .horarios-info-btn,
+  .horarios-close-btn {
+    width: 26px;
+    height: 26px;
+  }
+
+  .horarios-info-btn svg,
+  .horarios-close-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .horarios-floating-btn {
+    top: 90px;
+    right: 15px;
+  }
+
+  .horarios-toggle-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .horarios-toggle-btn svg{
+    width: 25px;
+    height: 25px;
+  }
+
+  .modal-horarios-content {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .modal-horarios-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .horario-item {
+    padding: 0.75rem;
+  }
+
+  .horario-dia,
+  .horario-horas {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .horarios-banner {
+    padding: 0.6rem 0.5rem;
+  }
+
+  .horarios-mensaje {
+    font-size: 0.8rem;
+  }
+
+  .horarios-info-btn,
+  .horarios-close-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .horarios-info-btn svg,
+  .horarios-close-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .horarios-floating-btn {
+    top: 90px;
+    right: 10px;
+  }
+
+  .horarios-toggle-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .horarios-toggle-btn svg{
+    width: 20px;
+    height: 20px;
+  }
+
+  .modal-horarios-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-horarios-header svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .horario-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* Modal de Horarios */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 1rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-horarios-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.modal-horarios-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  color: #d32f2f;
+}
+
+.modal-horarios-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.horarios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.horario-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
+  transition: all 0.3s ease;
+}
+
+.horario-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.horario-item.cerrado {
+  border-left-color: #999;
+  opacity: 0.5;
+}
+
+.horario-dia {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.horario-horas {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.horarios-nota {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e0e0e0;
+  color: #666;
+}
+
+.horarios-nota p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .horarios-banner {
+    top: 60px;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .horarios-banner-content {
+    gap: 0.5rem;
+  }
+
+  .horarios-banner-content svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .horarios-mensaje {
+    font-size: 0.85rem;
+  }
+
+  .horarios-info-btn {
+    width: 26px;
+    height: 26px;
+  }
+
+  .horarios-info-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .modal-horarios-content {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .modal-horarios-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .horario-item {
+    padding: 0.75rem;
+  }
+
+  .horario-dia,
+  .horario-horas {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .horarios-banner {
+    padding: 0.6rem 0.5rem;
+  }
+
+  .horarios-mensaje {
+    font-size: 0.8rem;
+  }
+
+  .horarios-info-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .horarios-info-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .modal-horarios-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-horarios-header svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .horario-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
