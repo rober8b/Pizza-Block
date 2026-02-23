@@ -4,6 +4,10 @@ import { useCart } from '../context/CartContext'
 import { useNavigate } from 'react-router-dom'
 import './Cart.css'
 
+const PROMO_EMPANADAS_CANTIDAD = 12
+const PROMO_EMPANADAS_PRECIO   = 27500
+const PRECIO_UNITARIO_EMPANADA = 2750
+
 const Cart = () => {
   const {
     cartItems,
@@ -12,10 +16,30 @@ const Cart = () => {
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,
-    getCartTotal
+    getCartTotal,
   } = useCart()
 
   const navigate = useNavigate()
+
+  // Calcula cuántas empanadas hay en total en el carrito
+  const totalEmpanadas = cartItems
+    .filter(i => i.categoria === 'Empanadas')
+    .reduce((sum, i) => sum + i.cantidad, 0)
+
+  const docenas = Math.floor(totalEmpanadas / PROMO_EMPANADAS_CANTIDAD)
+
+  // Devuelve el precio a mostrar para cada item
+  const getItemPrice = (item) => {
+    if (item.categoria !== 'Empanadas' || docenas === 0) {
+      return item.precio * item.cantidad
+    }
+    // Hay promo activa — el precio por empanada es $27500/12
+    const precioPorUnidad = PROMO_EMPANADAS_PRECIO / PROMO_EMPANADAS_CANTIDAD
+    return Math.round(precioPorUnidad * item.cantidad)
+  }
+
+  // Indica si la promo está activa para mostrar badge
+  const promoActiva = docenas > 0
 
   const handleCheckout = () => {
     setIsCartOpen(false)
@@ -24,12 +48,10 @@ const Cart = () => {
 
   return (
     <>
-      {/* Overlay */}
       {isCartOpen && (
         <div className="cart-overlay" onClick={() => setIsCartOpen(false)} />
       )}
 
-      {/* Carrito lateral */}
       <div className={`cart-sidebar ${isCartOpen ? 'open' : ''}`}>
         <div className="cart-header">
           <div className="cart-header-content">
@@ -50,6 +72,13 @@ const Cart = () => {
             </div>
           ) : (
             <>
+              {/* Banner promo empanadas */}
+              {promoActiva && (
+                <div className="cart-promo-banner">
+                  🎉 ¡Promo docena aplicada! Ahorrás ${(docenas * 5500).toLocaleString('es-AR')}
+                </div>
+              )}
+
               {cartItems.map((item) => (
                 <div key={`${item.id}-${item.categoria}`} className="cart-item">
                   <div className="cart-item-info">
@@ -59,7 +88,7 @@ const Cart = () => {
                     )}
                     <span className="cart-item-category">{item.categoria}</span>
                   </div>
-                  
+
                   <div className="cart-item-actions">
                     <div className="cart-item-quantity">
                       <button
@@ -76,10 +105,10 @@ const Cart = () => {
                         <Plus size={16} />
                       </button>
                     </div>
-                    
+
                     <div className="cart-item-price-row">
                       <span className="cart-item-price">
-                        ${(item.precio * item.cantidad).toLocaleString('es-AR')}
+                        ${getItemPrice(item).toLocaleString('es-AR')}
                       </span>
                       <button
                         onClick={() => removeFromCart(item.id, item.categoria)}
