@@ -379,10 +379,6 @@
   margin: 0;
 }
 
-.pizza-tipo-selector {
-  margin: 16px 0;
-}
-
 .pizza-tipo-label {
   font-size: 0.95rem;
   font-weight: 600;
@@ -391,13 +387,21 @@
   text-align: center;
 }
 
+.pizza-tipo-selector {
+  margin: 16px 0;
+  width: 100%;
+}
+
 .pizza-tipo-options {
   display: flex;
   gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .pizza-tipo-btn {
   flex: 1;
+  min-width: 0;
   padding: 10px;
   border: 2px solid #e5e7eb;
   border-radius: 8px;
