@@ -48,7 +48,17 @@ function ProductsList({ products }) {
 
 function formatProductsText(products) {
   if (!Array.isArray(products)) return ''
-  return products.map(p => `${p.cantidad ?? p.quantity ?? 1}x ${p.nombre ?? p.name ?? p.title ?? '?'}`).join(', ')
+  return products.map(p => {
+    const qty  = p.cantidad ?? p.quantity ?? 1
+    const name = p.nombre ?? p.name ?? p.title ?? '?'
+    const extras = [
+      p.tipoPizza   ? (p.tipoPizza === 'al_molde' ? '🍕 Al molde' : '🔥 A la piedra') : null,
+      p.tipoCarne   ? (p.tipoCarne === 'carne' ? '🥩 Carne' : '🍗 Pollo') : null,
+      p.extraPapas  ? `🍟 Papas con ${p.extraPapas.nombre ?? p.extraPapas}` : null,
+      p.ingredientes?.length ? `🥗 ${p.ingredientes.join(', ')}` : null,
+    ].filter(Boolean).join(' · ')
+    return extras ? `${qty}x ${name} (${extras})` : `${qty}x ${name}`
+  }).join(' | ')
 }
 
 function OrderCard({ order, onAdvance, isNew }) {
