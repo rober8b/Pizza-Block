@@ -60,7 +60,7 @@
       id: 8, 
       nombre: 'Coca Cola', 
       descripcion: 'Gaseosa 2.25L', 
-      precio: 6000,
+      precio: 6500,
       tipo: 'bebida',
       categoria: 'Gaseosa'
     },
@@ -68,7 +68,7 @@
       id: 9, 
       nombre: 'Coca Cola Zero', 
       descripcion: 'Gaseosa 2.25L', 
-      precio: 6000,
+      precio: 6500,
       tipo: 'bebida',
       categoria: 'Gaseosa'
     },
@@ -85,7 +85,7 @@
       id: 11, 
       nombre: 'Chocotorta', 
       descripcion: 'Postre tradicional argentino', 
-      precio: 5000,
+      precio: 5500,
       tipo: 'postre',
       categoria: 'Postre'
     },
@@ -93,7 +93,7 @@
       id: 12, 
       nombre: 'Oreo', 
       descripcion: 'Postre de Oreo', 
-      precio: 5000,
+      precio: 5500,
       tipo: 'postre',
       categoria: 'Postre'
     }

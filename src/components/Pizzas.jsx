@@ -9,6 +9,7 @@ import { estaAbierto } from '../utils/HorariosService'
 const Pizzas = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedPizza, setSelectedPizza] = useState(null)
+  const [tipoPizza, setTipoPizza] = useState('al_molde') // 'al_molde' o 'a_la_piedra'
   const [abierto, setAbierto] = useState(estaAbierto())
   const { addToCart } = useCart()
 
@@ -20,24 +21,29 @@ const Pizzas = () => {
     return () => clearInterval(interval)
   }, [])
 
+  // Resetear tipo al abrir un nuevo modal
+  const handleOpenModal = (pizza) => {
+    setTipoPizza('al_molde')
+    setSelectedPizza(pizza)
+  }
+
   const filteredProducts = PizzaData.filter(producto =>
     producto.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
     producto.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  const handleAddToCart = (producto, e) => {
-    if (e && e.stopPropagation) {
-      e.stopPropagation()
-    }
-    
+  const handleAddToCart = (producto, tipo, e) => {
+    if (e && e.stopPropagation) e.stopPropagation()
+
     if (!abierto) {
       alert('Lo sentimos, estamos cerrados en este momento. Consulta nuestros horarios de atención.')
       return
     }
-    
+
     addToCart({
       ...producto,
-      categoria: 'Pizzas'
+      categoria: 'Pizzas',
+      tipoPizza: tipo, // 'al_molde' o 'a_la_piedra'
     })
   }
 
@@ -63,10 +69,7 @@ const Pizzas = () => {
             className="search-input"
           />
           {searchTerm && (
-            <button 
-              onClick={() => setSearchTerm('')}
-              className="clear-search"
-            >
+            <button onClick={() => setSearchTerm('')} className="clear-search">
               <X size={20} />
             </button>
           )}
@@ -75,11 +78,11 @@ const Pizzas = () => {
 
       {/* Lista de productos */}
       <div className="products-grid">
-        {filteredProducts.map(({id, nombre, descripcion, precio}) => (
-          <div 
-            key={id} 
+        {filteredProducts.map(({ id, nombre, descripcion, precio }) => (
+          <div
+            key={id}
             className='product-card'
-            onClick={() => setSelectedPizza({id, nombre, descripcion, precio})}
+            onClick={() => handleOpenModal({ id, nombre, descripcion, precio })}
           >
             <div className="product-content">
               <h3 className='nombre-product'>{nombre}</h3>
@@ -87,9 +90,12 @@ const Pizzas = () => {
             </div>
 
             <div className="product-footer">
-              <button 
+              <button
                 className={`add-to-cart-btn ${!abierto ? 'disabled' : ''}`}
-                onClick={(e) => handleAddToCart({id, nombre, descripcion, precio}, e)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleOpenModal({ id, nombre, descripcion, precio })
+                }}
                 disabled={!abierto}
               >
                 {abierto ? (
@@ -119,31 +125,49 @@ const Pizzas = () => {
       {selectedPizza && (
         <div className="modal-overlay" onClick={() => setSelectedPizza(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button 
-              className="modal-close"
-              onClick={() => setSelectedPizza(null)}
-            >
+            <button className="modal-close" onClick={() => setSelectedPizza(null)}>
               <X size={24} />
             </button>
+
             <h2 className="modal-title">{selectedPizza.nombre}</h2>
             <p className="modal-description">{selectedPizza.descripcion}</p>
+
             <div className="modal-price">
               <span className="price-label">Precio:</span>
               <span className="price-value">${selectedPizza.precio.toLocaleString('es-AR')}</span>
             </div>
-            
+
+            {/* Selector Al molde / A la piedra */}
+            <div className="pizza-tipo-selector">
+              <p className="pizza-tipo-label">¿Cómo la querés?</p>
+              <div className="pizza-tipo-options">
+                <button
+                  className={`pizza-tipo-btn ${tipoPizza === 'al_molde' ? 'selected' : ''}`}
+                  onClick={() => setTipoPizza('al_molde')}
+                >
+                  🍕 Al molde
+                </button>
+                <button
+                  className={`pizza-tipo-btn ${tipoPizza === 'a_la_piedra' ? 'selected' : ''}`}
+                  onClick={() => setTipoPizza('a_la_piedra')}
+                >
+                  🔥 A la piedra
+                </button>
+              </div>
+            </div>
+
             {!abierto && (
               <div className="modal-cerrado-aviso">
                 <Lock size={20} />
                 <p>Estamos cerrados. Consultá nuestros horarios de atención.</p>
               </div>
             )}
-            
-            <button 
+
+            <button
               className={`modal-add-cart ${!abierto ? 'disabled' : ''}`}
               onClick={() => {
                 if (abierto) {
-                  handleAddToCart(selectedPizza)
+                  handleAddToCart(selectedPizza, tipoPizza)
                   setSelectedPizza(null)
                 } else {
                   alert('Lo sentimos, estamos cerrados en este momento.')

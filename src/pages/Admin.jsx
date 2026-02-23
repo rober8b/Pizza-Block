@@ -28,6 +28,7 @@ function ProductsList({ products }) {
         const name = p.nombre ?? p.name ?? p.title ?? '—'
         // Build extras string from known fields
         const extras = [
+          p.tipoPizza   ? (p.tipoPizza === 'al_molde' ? '🍕 Al molde' : '🔥 A la piedra') : null,
           p.tipoCarne   ? (p.tipoCarne === 'carne' ? '🥩 Carne' : '🍗 Pollo') : null,
           p.extraPapas  ? `🍟 Papas con ${p.extraPapas.nombre ?? p.extraPapas}` : null,
           p.ingredientes?.length ? `🥗 ${p.ingredientes.join(', ')}` : null,

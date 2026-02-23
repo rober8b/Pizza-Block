@@ -86,6 +86,11 @@ const Cart = () => {
                     {item.descripcion && (
                       <p className="cart-item-description">{item.descripcion}</p>
                     )}
+                    {item.tipoPizza && (
+                      <p className="cart-item-description">
+                        {item.tipoPizza === 'al_molde' ? '🍕 Al molde' : '🔥 A la piedra'}
+                      </p>
+                    )}
                     <span className="cart-item-category">{item.categoria}</span>
                   </div>
 
