@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { User, Mail, Phone, MapPin, DollarSign, ShoppingBag, ArrowLeft, Loader, Home, Store } from 'lucide-react'
 import MercadoPagoModal from '../components/MercadoPagoModal'
+import { uploadReceipt, createOrder } from '../services/orderService'
 import './Checkout.css'
 
 const Checkout = () => {
@@ -119,7 +120,9 @@ const Checkout = () => {
     await sendOrder(null)
   }
 
-  const sendOrder = async (comprobanteBase64) => {
+  // comprobanteBase64 viene del MercadoPagoModal (puede ser null para efectivo)
+  // comprobanteFile es el File original para subir a Supabase Storage
+  const sendOrder = async (comprobanteBase64, comprobanteFile = null) => {
     setLoading(true)
 
     try {
@@ -133,45 +136,41 @@ const Checkout = () => {
         envio: formData.tipoEntrega === 'delivery' ? COSTO_ENVIO : 0
       }
 
-      const response = await fetch('https://stayed-conversion-divine-offers.trycloudflare.com/api/pedido', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...orderData,
-          comprobante: comprobanteBase64
-        })
+      // Subir comprobante a Supabase Storage si existe
+      const receiptUrl = await uploadReceipt(comprobanteFile)
+
+      // Construir dirección según tipo de entrega
+      const address = orderData.cliente.tipoEntrega === 'delivery'
+        ? `${orderData.cliente.calle} ${orderData.cliente.numero}, entre ${orderData.cliente.entrecalles}`
+        : 'Retiro en local'
+
+      // Guardar pedido en Supabase
+      await createOrder({
+        customer_name: `${orderData.cliente.nombre} ${orderData.cliente.apellido}`.trim(),
+        phone: orderData.cliente.telefono,
+        address,
+        products: orderData.pedido,
+        total: orderData.total.total,
+        payment_method: orderData.cliente.metodoPago,
+        receipt_url: receiptUrl,
       })
 
-      const data = await response.json()
-
-      if (data.success) {
-        clearCart()
-        setMpModalOpen(false)
-        setPendingOrderData(null)
-        setModalInfo({
-          title: "¡Pedido realizado con éxito! 🎉",
-          message: "Tu pedido fue enviado correctamente. En breve nos contactamos por WhatsApp.",
-          success: true
-        }) 
-        setModalOpen(true)
-      } else {
-        setMpModalOpen(false)
-        setModalInfo({
-          title: "Error al procesar tu pedido",
-          message: "Hubo un problema al enviar el pedido. Intenta nuevamente.",
-          success: false
-        })
-        setModalOpen(true)
-      }
+      clearCart()
+      setMpModalOpen(false)
+      setPendingOrderData(null)
+      setModalInfo({
+        title: "¡Pedido realizado con éxito! 🎉",
+        message: "Tu pedido fue enviado correctamente. En breve nos contactamos por WhatsApp.",
+        success: true
+      }) 
+      setModalOpen(true)
 
     } catch (error) {
       console.error('Error:', error)
       setMpModalOpen(false)
       setModalInfo({
-        title: "Error de conexión",
-        message: "No pudimos comunicarnos con el servidor. Vuelve a intentarlo en un rato.",
+        title: "Error al procesar tu pedido",
+        message: error.message || "Hubo un problema al enviar el pedido. Intenta nuevamente.",
         success: false
       })
       setModalOpen(true)
@@ -481,28 +480,21 @@ const Checkout = () => {
                   {/* Mostrar configuraciones si existen */}
                   {(item.tipoCarne || item.extraPapas || (item.ingredientes && item.ingredientes.length > 0)) && (
                     <div className="summary-item-config">
-                      {/* Tipo de carne para milanesas y sandwiches */}
                       {item.tipoCarne && (
                         <div className="config-line">
                           🥩 {item.tipoCarne === 'carne' ? 'Carne' : 'Pollo'}
                         </div>
                       )}
-                      
-                      {/* Extra de papas para milanesas */}
                       {item.extraPapas && (
                         <div className="config-line">
                           🍟 Papas con {item.extraPapas.nombre}
                         </div>
                       )}
-                      
-                      {/* Sin extra de papas */}
                       {item.categoria === 'Milanesas' && !item.extraPapas && (
                         <div className="config-line">
                           🍟 Papas incluidas
                         </div>
                       )}
-                      
-                      {/* Ingredientes para sandwiches */}
                       {item.ingredientes && item.ingredientes.length > 0 && (
                         <div className="config-line">
                           🥗 {item.ingredientes.join(', ')}

@@ -19,13 +19,11 @@ const MercadoPagoModal = ({ isOpen, onClose, totalAmount, onConfirmPayment }) =>
     
     if (!file) return;
 
-    // Validar que sea imagen
     if (!file.type.startsWith('image/')) {
       setError('Por favor, subí una imagen (JPG, PNG, etc.)');
       return;
     }
 
-    // Validar tamaño (máximo 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setError('La imagen es muy grande. Máximo 5MB');
       return;
@@ -33,7 +31,6 @@ const MercadoPagoModal = ({ isOpen, onClose, totalAmount, onConfirmPayment }) =>
 
     setError('');
 
-    // Crear preview
     const reader = new FileReader();
     reader.onloadend = () => {
       setComprobantePreview(reader.result);
@@ -56,18 +53,20 @@ const MercadoPagoModal = ({ isOpen, onClose, totalAmount, onConfirmPayment }) =>
 
     setLoading(true);
 
-    // Convertir imagen a base64
+    // ── ÚNICO CAMBIO ──────────────────────────────────────────────
+    // Antes: onConfirmPayment(base64String)  →  solo pasaba el base64
+    // Ahora: onConfirmPayment(base64String, comprobante)
+    //        también pasa el File original para subirlo a Supabase Storage
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result;
-      onConfirmPayment(base64String);
+      onConfirmPayment(base64String, comprobante);
     };
     reader.readAsDataURL(comprobante);
   };
 
-  const handleCopyToClipboard = (text, type) => {
+  const handleCopyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    // Aquí podrías agregar un toast o mensaje de "Copiado!"
   };
 
   if (!isOpen) return null;
@@ -97,7 +96,7 @@ const MercadoPagoModal = ({ isOpen, onClose, totalAmount, onConfirmPayment }) =>
                   <span className="mp-data-value">{mpData.alias}</span>
                   <button 
                     className="mp-copy-btn"
-                    onClick={() => handleCopyToClipboard(mpData.alias, 'alias')}
+                    onClick={() => handleCopyToClipboard(mpData.alias)}
                   >
                     Copiar
                   </button>
@@ -110,7 +109,7 @@ const MercadoPagoModal = ({ isOpen, onClose, totalAmount, onConfirmPayment }) =>
                   <span className="mp-data-value">{mpData.cvu}</span>
                   <button 
                     className="mp-copy-btn"
-                    onClick={() => handleCopyToClipboard(mpData.cvu, 'cvu')}
+                    onClick={() => handleCopyToClipboard(mpData.cvu)}
                   >
                     Copiar
                   </button>

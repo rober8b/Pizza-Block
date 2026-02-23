@@ -1,0 +1,500 @@
+/* =============================================
+   Admin Panel — Kitchen Display System
+   Desktop-first (min 1024px)
+   ============================================= */
+
+:root {
+  --col-nuevo: #1a1a2e;
+  --col-preparando: #16213e;
+  --col-en-camino: #0f3460;
+  --accent-nuevo: #e94560;
+  --accent-preparando: #f5a623;
+  --accent-encamino: #4caf82;
+  --card-bg: #ffffff;
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  --text-dark: #1a1a2e;
+  --text-muted: #6b7280;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Force admin to always fill full screen, no black bars */
+html, body, #root, .App {
+  height: 100%;
+}
+
+.admin {
+  min-height: 100vh;
+  width: 100%;
+  background: #f1f5f9;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--text-dark);
+}
+
+/* Header */
+.admin__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1a1a2e;
+  color: white;
+  padding: 14px 28px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.admin__header h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.admin__header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Board — always 3 columns on desktop */
+.admin__board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 20px 28px;
+  min-height: calc(100vh - 61px);
+  width: 100%;
+}
+
+/* Columns */
+.admin__column {
+  background: white;
+  border-radius: var(--radius);
+  padding: 16px;
+  border-top: 4px solid transparent;
+  box-shadow: var(--card-shadow);
+  min-width: 0; /* prevent overflow */
+}
+
+.admin__column--nuevo      { border-top-color: var(--accent-nuevo); }
+.admin__column--preparando { border-top-color: var(--accent-preparando); }
+.admin__column--en_camino  { border-top-color: var(--accent-encamino); }
+
+.admin__column-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin__column-count {
+  background: #f3f4f6;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.admin__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin__empty {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* ── Order Cards ── */
+.order-card {
+  background: var(--card-bg);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  padding: 14px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  box-shadow: var(--card-shadow);
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.order-card--new {
+  border-color: var(--accent-nuevo);
+  animation: pulse-new 1s ease-in-out 4;
+}
+
+@keyframes pulse-new {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0); }
+  50%       { box-shadow: 0 0 0 6px rgba(233, 69, 96, 0.35); }
+}
+
+.order-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.order-card__name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.order-card__time {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.order-card__address {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+/* ── Products list — cleaner format ── */
+.order-card__products {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #374151;
+  padding: 8px 10px;
+  background: #f9fafb;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  border-left: 3px solid #e5e7eb;
+}
+
+.order-card__product-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+.order-card__product-qty {
+  font-weight: 700;
+  color: #1a1a2e;
+  min-width: 24px;
+  font-size: 0.9rem;
+}
+
+.order-card__product-name {
+  color: #374151;
+  flex: 1;
+}
+
+.order-card__product-extras {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+  padding-left: 30px;
+  margin-top: -2px;
+}
+
+.order-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.order-card__total {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.order-card__payment {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  background: #e5e7eb;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.order-card__receipt {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: #3b82f6;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.order-card__receipt:hover { text-decoration: underline; }
+
+.order-card__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.btn:hover  { opacity: 0.88; }
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: var(--text-dark);
+  color: white;
+  flex: 1;
+}
+
+.btn--whatsapp {
+  background: #25d366;
+  color: white;
+}
+
+.btn--refresh,
+.btn--historial {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn--refresh:hover,
+.btn--historial:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+/* ── Sound unlock banner ── */
+.admin__sound-banner {
+  background: #fff3cd;
+  border-bottom: 2px solid #f5a623;
+  padding: 10px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: #856404;
+  font-weight: 600;
+}
+
+.admin__sound-banner button {
+  background: #f5a623;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+/* ── Historial ── */
+.historial {
+  margin: 0 28px 32px;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.historial__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: #1a1a2e;
+  color: white;
+}
+
+.historial__header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.historial__count {
+  font-size: 0.8rem;
+  background: rgba(255,255,255,0.15);
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+.historial__loading,
+.historial__empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.historial-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s;
+}
+
+.historial-row:last-child { border-bottom: none; }
+.historial-row:hover { background: #f9fafb; }
+
+.historial-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.historial-row__name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.historial-row__address {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.historial-row__products {
+  font-size: 0.82rem;
+  color: #374151;
+}
+
+.historial-row__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.historial-row__date   { font-size: 0.78rem; color: var(--text-muted); }
+.historial-row__total  { font-weight: 700; font-size: 0.95rem; color: var(--text-dark); }
+
+.historial-row__payment {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  background: #e5e7eb;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.historial-row__receipt {
+  font-size: 0.78rem;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.historial-row__receipt:hover { text-decoration: underline; }
+
+/* ── Loading / Error ── */
+.admin-loading,
+.admin-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  background: #f1f5f9;
+}
+
+.admin-error { color: var(--accent-nuevo); }
+
+/* ── Login ── */
+.admin-login {
+  min-height: 100vh;
+  width: 100%;
+  background: #1a1a2e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-login__box {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+.admin-login__box h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.admin-login__box p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: -6px;
+}
+
+.admin-login__box input {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.admin-login__box input:focus { border-color: var(--text-dark); }
+
+.admin-login__box button {
+  background: #1a1a2e;
+  color: white;
+  border: none;
+  padding: 13px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.admin-login__box button:hover { opacity: 0.85; }
+
+.admin-login__error {
+  color: var(--accent-nuevo);
+  font-size: 0.85rem;
+  font-weight: 600;
+}

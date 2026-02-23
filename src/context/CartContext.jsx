@@ -2,6 +2,10 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 
 const CartContext = createContext()
 
+// ── Promo: 12 empanadas $27.500 en vez de $33.000 ──────────
+const PROMO_EMPANADAS_CANTIDAD = 12
+const PROMO_EMPANADAS_PRECIO   = 27500
+
 export const useCart = () => {
   const context = useContext(CartContext)
   if (!context) {
@@ -79,9 +83,42 @@ export const CartProvider = ({ children }) => {
     setCartItems([])
   }
 
-  // Calcular total
+  // Calcular total con promo de empanadas
   const getCartTotal = () => {
-    return cartItems.reduce((total, item) => total + (item.precio * item.cantidad), 0)
+    // Contar total de empanadas en el carrito (pueden ser de distintos tipos)
+    const totalEmpanadas = cartItems
+      .filter(item => item.categoria === 'Empanadas')
+      .reduce((sum, item) => sum + item.cantidad, 0)
+
+    // Cuántas docenas completas hay → cada una vale $27.500
+    const docenas       = Math.floor(totalEmpanadas / PROMO_EMPANADAS_CANTIDAD)
+    const empanadasSueltas = totalEmpanadas % PROMO_EMPANADAS_CANTIDAD
+
+    // Total de empanadas con promo aplicada
+    const totalEmpanadasConPromo =
+      docenas * PROMO_EMPANADAS_PRECIO +
+      empanadasSueltas * 2750 // precio unitario normal
+
+    // Total del resto de productos (todo lo que NO sea empanada)
+    const totalResto = cartItems
+      .filter(item => item.categoria !== 'Empanadas')
+      .reduce((sum, item) => sum + item.precio * item.cantidad, 0)
+
+    return totalEmpanadasConPromo + totalResto
+  }
+
+  // Descuento aplicado (útil para mostrarlo en el carrito)
+  const getPromoEmpanadasDescuento = () => {
+    const totalEmpanadas = cartItems
+      .filter(item => item.categoria === 'Empanadas')
+      .reduce((sum, item) => sum + item.cantidad, 0)
+
+    const docenas = Math.floor(totalEmpanadas / PROMO_EMPANADAS_CANTIDAD)
+    if (docenas === 0) return 0
+
+    const precioNormal = docenas * PROMO_EMPANADAS_CANTIDAD * 2750
+    const precioPromo  = docenas * PROMO_EMPANADAS_PRECIO
+    return precioNormal - precioPromo // 5500 por docena
   }
 
   // Obtener cantidad total de items
@@ -99,7 +136,8 @@ export const CartProvider = ({ children }) => {
     decreaseQuantity,
     clearCart,
     getCartTotal,
-    getCartItemsCount
+    getCartItemsCount,
+    getPromoEmpanadasDescuento,
   }
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>

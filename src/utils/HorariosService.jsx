@@ -11,7 +11,8 @@ const HORARIOS_ATENCION = {
   sabado: { dia: 6, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
   domingo: { dia: 0, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
 };
-const MODO_PRUEBA = true;
+
+const MODO_PRUEBA = false; // ← cambiado a false, ahora respeta los horarios reales
 
 // Nombres de los días en español
 const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
