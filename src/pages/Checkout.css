@@ -340,6 +340,62 @@
   color: #333;
 }
 
+.abona-con-section {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.abona-con-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.abona-con-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.abona-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.abona-input:focus { border-color: #d32f2f; }
+.abona-input.error { border-color: #ef4444; }
+.abona-input:disabled { background: #f3f4f6; color: #9ca3af; }
+
+.abona-btn {
+  padding: 10px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.abona-btn:hover { border-color: #d32f2f; color: #d32f2f; }
+
+.abona-btn.selected {
+  border-color: #d32f2f;
+  background: #fff0f0;
+  color: #d32f2f;
+}
+
 /* ===========================
    BOTÓN CONFIRMAR PEDIDO
 =========================== */

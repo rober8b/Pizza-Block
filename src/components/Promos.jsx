@@ -10,6 +10,7 @@ const Promos = () => {
   const [selectedPromo, setSelectedPromo] = useState(null)
   const [abierto, setAbierto] = useState(estaAbierto())
   const { addToCart } = useCart()
+  const [configuracion, setConfiguracion] = useState({})
 
   // Verificar estado cada minuto
   useEffect(() => {
@@ -49,6 +50,7 @@ const Promos = () => {
 
   const openPromoModal = (promo) => {
     setSelectedPromo(promo)
+    setConfiguracion({})
     setShowModal(true)
   }
 
@@ -69,9 +71,94 @@ const Promos = () => {
     
     addToCart({
       ...promo,
-      categoria: 'Promos'
+      categoria: 'Promos',
+      configuracion
     })
   }
+  
+  const getMaxEmpanadas = () => {
+    if (selectedPromo?.id === 1) return 12
+    if (selectedPromo?.id === 2) return 24
+    return 0
+  }
+
+  const getTotalEmpanadas = () => {
+    const emp = configuracion.empanadas || {}
+    return Object.values(emp).reduce((a, b) => a + b, 0)
+  }
+
+  const changeEmpanadaCantidad = (gusto, delta) => {
+    setConfiguracion(prev => {
+      const emp = prev.empanadas || {}
+      const actual = emp[gusto] || 0
+      const total = Object.values(emp).reduce((a,b)=>a+b,0)
+      const max = getMaxEmpanadas()
+
+      // evitar superar máximo
+      if (delta > 0 && total >= max) return prev
+
+      const nuevaCantidad = Math.max(0, actual + delta)
+
+      return {
+        ...prev,
+        empanadas: {
+          ...emp,
+          [gusto]: nuevaCantidad
+        }
+      }
+    })
+  }
+
+  const setPizzaTipo = (index, tipo) => {
+    setConfiguracion(prev => {
+      const pizzas = prev.pizzas || {}
+      return {
+        ...prev,
+        pizzas: {
+          ...pizzas,
+          [index]: tipo
+        }
+      }
+    })
+  }
+
+  const gustosEmpanadas = [
+      'Carne',
+      'Jamón y Mozzarella',
+      'Pollo',
+      'Caprese',
+      'Humita',
+      'Roquefort',
+      'Verdura',
+      'Carne picante',
+      'Cebolla y Mozzarella',
+      'Salchicha y Mozzarella',
+      'Calabresa'
+  ]
+
+  const isPromoComplete = () => {
+    if (!selectedPromo) return false
+
+    // PROMO 1
+    if (selectedPromo.id === 1) {
+      const total = getTotalEmpanadas()
+      return !!configuracion.pizzaTipo && total === 12
+    }
+
+    // PROMO 2
+    if (selectedPromo.id === 2) {
+      const total = getTotalEmpanadas()
+      return total === 24
+    }
+
+    // PROMO 3
+    if (selectedPromo.id === 3) {
+      const pizzas = configuracion.pizzas || {}
+      return pizzas[1] && pizzas[2] && pizzas[3]
+    }
+
+    return true
+  } 
 
   return (
     <div className='container-promos' id='promos'>
@@ -103,23 +190,26 @@ const Promos = () => {
             </div>
             <div className="promo-footer">
               <span className='promo-precio'>${promo.precio.toLocaleString('es-AR')}</span>
-              <button 
-                className={`add-to-cart-btn-promo ${!abierto ? 'disabled' : ''}`}
-                onClick={(e) => handleAddToCart(promo, e)}
-                disabled={!abierto}
-              >
-                {abierto ? (
-                  <>
-                    <ShoppingCart size={18} />
-                    Agregar
-                  </>
-                ) : (
-                  <>
-                    <Lock size={18} />
-                    Cerrado
-                  </>
-                )}
-              </button>
+                <button 
+                  className={`add-to-cart-btn-promo ${!abierto ? 'disabled' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    openPromoModal(promo)
+                  }}
+                  disabled={!abierto}
+                >
+                  {abierto ? (
+                    <>
+                      <ShoppingCart size={18} />
+                      Agregar
+                    </>
+                  ) : (
+                    <>
+                      <Lock size={18} />
+                      Cerrado
+                    </>
+                  )}
+                </button>
             </div>
           </div>
         ))}
@@ -143,12 +233,110 @@ const Promos = () => {
               <p className="modal-items">{selectedPromo.descripcion}</p>
               <p className="modal-detail">{selectedPromo.detalle}</p>
             </div>
+            {/* CONFIGURADOR PROMOS */}
+            <div className="promo-config">
+              {/* PROMO 1 */}
+              {selectedPromo.id === 1 && (
+                <>
+                  <h4>Tipo de pizza</h4>
+                  <div className="config-options">
+                    {['Molde', 'Piedra'].map(tipo => (
+                      <button
+                        key={tipo}
+                        className={`config-btn ${configuracion.pizzaTipo === tipo ? 'active' : ''}`}
+                        onClick={() => setConfiguracion(prev => ({ ...prev, pizzaTipo: tipo }))}
+                      >
+                        {tipo}
+                      </button>
+                    ))}
+                  </div>
+
+                  <h4>
+                    Elegí las empanadas ({getTotalEmpanadas()}/12)
+                  </h4>
+                  <div className="empanadas-list">
+                    {gustosEmpanadas.map(gusto => {
+                      const cantidad = configuracion.empanadas?.[gusto] || 0
+
+                      return (
+                        <div key={gusto} className="emp-row">
+                          <span>{gusto}</span>
+
+                          <div className="contador">
+                            <button onClick={() => changeEmpanadaCantidad(gusto,-1)}>-</button>
+                            <span>{cantidad}</span>
+                            <button
+                              onClick={() => changeEmpanadaCantidad(gusto,1)}
+                              disabled={getTotalEmpanadas() >= 12}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </>
+              )}
+
+              {/* PROMO 2 */}
+              {selectedPromo.id === 2 && (
+                <>
+                  <h4>
+                    Elegí las empanadas ({getTotalEmpanadas()}/24)
+                  </h4>
+
+                  <div className="empanadas-list">
+                    {gustosEmpanadas.map(gusto => {
+                      const cantidad = configuracion.empanadas?.[gusto] || 0
+
+                      return (
+                        <div key={gusto} className="emp-row">
+                          <span>{gusto}</span>
+
+                          <div className="contador">
+                            <button onClick={() => changeEmpanadaCantidad(gusto,-1)}>-</button>
+                            <span>{cantidad}</span>
+                            <button
+                              onClick={() => changeEmpanadaCantidad(gusto,1)}
+                              disabled={getTotalEmpanadas() >= 24}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </>
+              )}
+
+              {/* PROMO 3 */}
+              {selectedPromo.id === 3 && (
+                <>
+                  <h4>Tipo de cada pizza</h4>
+                  {[1,2,3].map(i => (
+                    <div key={i} className="pizza-select-row">
+                      <span>Pizza {i}</span>
+                      <div className="config-options">
+                        {['Molde','Piedra'].map(tipo => (
+                          <button
+                            key={tipo}
+                            className={`config-btn ${(configuracion.pizzas?.[i]) === tipo ? 'active' : ''}`}
+                            onClick={() => setPizzaTipo(i, tipo)}
+                          >
+                            {tipo}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
             <div className="modal-price">
               <span className="price-label">Precio especial:</span>
               <span className="price-value">${selectedPromo.precio.toLocaleString('es-AR')}</span>
-            </div>
-            <div className="modal-delivery-badge">
-              🛵 Delivery sin cargo
             </div>
             
             {!abierto && (
@@ -159,16 +347,20 @@ const Promos = () => {
             )}
             
             <button 
-              className={`modal-add-cart ${!abierto ? 'disabled' : ''}`}
+              className={`modal-add-cart ${(!abierto || !isPromoComplete()) ? 'disabled' : ''}`}
               onClick={() => {
-                if (abierto) {
-                  handleAddToCart(selectedPromo)
+                if (abierto && isPromoComplete()) {
+                  addToCart({
+                    ...selectedPromo,
+                    categoria: 'Promos',
+                    configuracion
+                  })
                   closeModal()
                 } else {
                   alert('Lo sentimos, estamos cerrados en este momento.')
                 }
               }}
-              disabled={!abierto}
+              disabled={!abierto || !isPromoComplete()}
             >
               {abierto ? (
                 <>
@@ -182,6 +374,11 @@ const Promos = () => {
                 </>
               )}
             </button>
+            {!isPromoComplete() && (
+              <div className="modal-validation">
+                ⚠️ Completá la configuración para continuar
+              </div>
+            )}
           </div>
         </div>
       )}

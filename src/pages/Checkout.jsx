@@ -6,6 +6,38 @@ import MercadoPagoModal from '../components/MercadoPagoModal'
 import { uploadReceipt, createOrder } from '../services/orderService'
 import './Checkout.css'
 
+const buildPromoConfigLines = (config) => {
+  if (!config) return []
+
+  const lines = []
+
+  // pizza única (promo 1)
+  if (config.pizzaTipo) {
+    lines.push(`🍕 ${config.pizzaTipo === 'Molde' ? 'Al molde' : 'A la piedra'}`)
+  }
+
+  // pizzas múltiples (promo 3)
+  if (config.pizzas) {
+    Object.entries(config.pizzas).forEach(([num, tipo]) => {
+      lines.push(`🍕 Pizza ${num}: ${tipo}`)
+    })
+  }
+
+  // empanadas
+  if (config.empanadas) {
+    const emp = Object.entries(config.empanadas)
+      .filter(([_, cant]) => cant > 0)
+      .map(([gusto, cant]) => `${gusto} x${cant}`)
+      .join(', ')
+
+    if (emp) {
+      lines.push(`🥟 ${emp}`)
+    }
+  }
+
+  return lines
+}
+
 const Checkout = () => {
   const navigate = useNavigate()
   const { cartItems, getCartTotal, clearCart } = useCart()
@@ -31,6 +63,9 @@ const Checkout = () => {
     message: "",
     success: false
   })
+
+  const [abonaConEfectivo, setAbonaConEfectivo] = useState('') // monto o 'justo'
+  const [errorEfectivo, setErrorEfectivo] = useState('')
 
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -86,7 +121,19 @@ const Checkout = () => {
       if (!formData.entrecalles.trim()) newErrors.entrecalles = 'Las entrecalles son requeridas'
     }
 
+    if (formData.metodoPago === 'efectivo' && formData.tipoEntrega === 'delivery') {
+      if (!abonaConEfectivo) {
+        newErrors.efectivo = 'Indicá con cuánto vas a abonar'
+      } else if (abonaConEfectivo !== 'justo') {
+        const monto = parseInt(abonaConEfectivo.replace(/\D/g, ''))
+        if (isNaN(monto) || monto < total) {
+          newErrors.efectivo = `El monto debe ser mayor o igual a $${total.toLocaleString('es-AR')}`
+        }
+      }
+    }
+
     setErrors(newErrors)
+    
     return Object.keys(newErrors).length === 0
   }
 
@@ -153,6 +200,7 @@ const Checkout = () => {
         total: orderData.total.total,
         payment_method: orderData.cliente.metodoPago,
         receipt_url: receiptUrl,
+        cash_amount: orderData.cliente.metodoPago === 'efectivo' ? abonaConEfectivo : null, // 👈 nuevo
       })
 
       clearCart()
@@ -417,6 +465,7 @@ const Checkout = () => {
                         </div>
                       </div>
                     ) : (
+                      <>
                       <div className="payment-methods">
                         <label className={`payment-option ${formData.metodoPago === 'efectivo' ? 'selected' : ''}`}>
                           <input
@@ -442,6 +491,33 @@ const Checkout = () => {
                           <span>💳 Mercado Pago</span>
                         </label>
                       </div>
+
+                      {/* Selector de vuelto — solo efectivo delivery */}
+                      {formData.metodoPago === 'efectivo' && formData.tipoEntrega === 'delivery' && (
+                        <div className="abona-con-section">
+                          <p className="abona-con-label">¿Con cuánto vas a abonar?</p>
+                          <div className="abona-con-row">
+                            <input
+                              type="number"
+                              className={`abona-input ${errors.efectivo ? 'error' : ''}`}
+                              placeholder={`Ej: $${40000}`}
+                              min={total}
+                              value={abonaConEfectivo === 'justo' ? '' : abonaConEfectivo}
+                              onChange={e => { setAbonaConEfectivo(e.target.value); setErrorEfectivo('') }}
+                              disabled={abonaConEfectivo === 'justo'}
+                            />
+                            <button
+                              type="button"
+                              className={`abona-btn ${abonaConEfectivo === 'justo' ? 'selected' : ''}`}
+                              onClick={() => setAbonaConEfectivo(abonaConEfectivo === 'justo' ? '' : 'justo')}
+                            >
+                              Justo 💯
+                            </button>
+                          </div>
+                          {errors.efectivo && <p className="error-message">{errors.efectivo}</p>}
+                        </div>
+                      )}
+                      </>
                     )}
                   </div>
 
@@ -478,28 +554,55 @@ const Checkout = () => {
                   </div>
                   
                   {/* Mostrar configuraciones si existen */}
-                  {(item.tipoCarne || item.extraPapas || (item.ingredientes && item.ingredientes.length > 0)) && (
+                  {(
+                    item.tipoCarne ||
+                    item.extraPapas ||
+                    (item.ingredientes && item.ingredientes.length > 0) ||
+                    item.configuracion
+                  ) && (
                     <div className="summary-item-config">
+
+                      {/* CONFIG NORMAL EXISTENTE */}
                       {item.tipoCarne && (
                         <div className="config-line">
                           🥩 {item.tipoCarne === 'carne' ? 'Carne' : 'Pollo'}
                         </div>
                       )}
-                      {item.extraPapas && (
+
+                      {item.tipoPizza && (
                         <div className="config-line">
-                          🍟 Papas con {item.extraPapas.nombre}
+                          {item.tipoPizza === 'al_molde' ? '🍕 Al molde' : '🔥 A la piedra'}
                         </div>
                       )}
+
+                      {item.extraPapas && (
+                        <div className="config-line">
+                          🍟 Papas con {Array.isArray(item.extraPapas)
+                            ? item.extraPapas.map(e => e.nombre).join(', ')
+                            : item.extraPapas.nombre}
+                        </div>
+                      )}
+
                       {item.categoria === 'Milanesas' && !item.extraPapas && (
                         <div className="config-line">
                           🍟 Papas incluidas
                         </div>
                       )}
+
                       {item.ingredientes && item.ingredientes.length > 0 && (
                         <div className="config-line">
                           🥗 {item.ingredientes.join(', ')}
                         </div>
                       )}
+
+                      {/* 🔥 CONFIG PROMOS NUEVA */}
+                      {item.configuracion &&
+                        buildPromoConfigLines(item.configuracion).map((line, i) => (
+                          <div key={i} className="config-line">
+                            {line}
+                          </div>
+                        ))
+                      }
                     </div>
                   )}
                 </div>

@@ -14,7 +14,8 @@ const SandwichConfigModal = ({ item, onClose, onConfirm }) => {
   const ingredientesOptions = [
     'Lechuga',
     'Tomate',
-    'Jamón y Queso'
+    'Jamón',
+    'Queso'
   ];
 
   const handleToggleIngrediente = (ingrediente) => {

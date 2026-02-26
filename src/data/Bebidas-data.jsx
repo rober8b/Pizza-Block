@@ -2,7 +2,7 @@
     // Bebidas
     { 
       id: 1, 
-      nombre: '7up Lata', 
+      nombre: '7up Lata 354ml', 
       descripcion: 'Lata 354ml', 
       precio: 2000,
       tipo: 'bebida',
@@ -10,7 +10,7 @@
     },
     { 
       id: 2, 
-      nombre: 'Pepsi Lata', 
+      nombre: 'Pepsi Lata 354ml', 
       descripcion: 'Lata 354ml', 
       precio: 2000,
       tipo: 'bebida',
@@ -18,7 +18,7 @@
     },
     { 
       id: 3, 
-      nombre: 'Speed', 
+      nombre: 'Speed 250ml', 
       descripcion: 'Energizante 250ml', 
       precio: 2500,
       tipo: 'bebida',
@@ -26,23 +26,24 @@
     },
     { 
       id: 4, 
-      nombre: 'Schneider', 
+      nombre: 'Agua chica 500ml', 
+      descripcion: 'Agua mineral 500ml', 
+      precio: 1000,
+      tipo: 'bebida',
+      categoria: 'Agua Mineral'
+    },
+    
+    { 
+      id: 5, 
+      nombre: 'Schneider 473ml', 
       descripcion: 'Cerveza 473ml', 
-      precio: 3000,
+      precio: 3500,
       tipo: 'bebida',
       categoria: 'Cerveza'
     },
     { 
-      id: 5, 
-      nombre: 'Baggio Fresh Naranja', 
-      descripcion: 'Agua saborizada 1.5L', 
-      precio: 3000,
-      tipo: 'bebida',
-      categoria: 'Agua Saborizada'
-    },
-    { 
       id: 6, 
-      nombre: 'Baggio Fresh Manzana', 
+      nombre: 'Baggio Fresh Naranja 1.5L', 
       descripcion: 'Agua saborizada 1.5L', 
       precio: 3000,
       tipo: 'bebida',
@@ -50,7 +51,7 @@
     },
     { 
       id: 7, 
-      nombre: 'Baggio Fresh Pomelo', 
+      nombre: 'Baggio Fresh Manzana 1.5L', 
       descripcion: 'Agua saborizada 1.5L', 
       precio: 3000,
       tipo: 'bebida',
@@ -58,15 +59,15 @@
     },
     { 
       id: 8, 
-      nombre: 'Coca Cola', 
-      descripcion: 'Gaseosa 2.25L', 
-      precio: 6500,
+      nombre: 'Baggio Fresh Pomelo 1.5L', 
+      descripcion: 'Agua saborizada 1.5L', 
+      precio: 3000,
       tipo: 'bebida',
-      categoria: 'Gaseosa'
+      categoria: 'Agua Saborizada'
     },
     { 
       id: 9, 
-      nombre: 'Coca Cola Zero', 
+      nombre: 'Coca Cola 2.25L', 
       descripcion: 'Gaseosa 2.25L', 
       precio: 6500,
       tipo: 'bebida',
@@ -74,15 +75,32 @@
     },
     { 
       id: 10, 
-      nombre: 'Sprite', 
+      nombre: 'Coca Cola Zero 2.25L', 
       descripcion: 'Gaseosa 2.25L', 
-      precio: 6000,
+      precio: 6500,
       tipo: 'bebida',
       categoria: 'Gaseosa'
     },
-    // Postres
     { 
       id: 11, 
+      nombre: 'Sprite 2.25L', 
+      descripcion: 'Gaseosa 2.25L', 
+      precio: 6500,
+      tipo: 'bebida',
+      categoria: 'Gaseosa'
+    },
+    { 
+      id: 12, 
+      nombre: 'Agua grande 2L', 
+      descripcion: 'Agua mineral 2L', 
+      precio: 2500,
+      tipo: 'bebida',
+      categoria: 'Agua Mineral'
+    },
+
+    // Postres
+    { 
+      id: 13, 
       nombre: 'Chocotorta', 
       descripcion: 'Postre tradicional argentino', 
       precio: 5500,
@@ -90,7 +108,7 @@
       categoria: 'Postre'
     },
     { 
-      id: 12, 
+      id: 14, 
       nombre: 'Oreo', 
       descripcion: 'Postre de Oreo', 
       precio: 5500,

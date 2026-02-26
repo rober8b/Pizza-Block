@@ -5,7 +5,6 @@ import milanesasData from '../data/Milanesas-data'
 import './Milanesas.css'
 import BannerSandwiches from '../assets/Milanesas_banner_2.png'
 import sandwichesData from '../data/Sandwiches-data'
-import fritasExtra_image from '../assets/extra_fritas-image.png'
 import papasData from '../data/Papas-data'
 import { useCart } from '../context/CartContext'
 import MilanesaConfigModal from './MilanesaConfigModal' 
@@ -74,9 +73,10 @@ const Milanesas = () => {
   const handleConfirmMilanesa = (configuredItem) => {
     let descripcionCompleta = configuredItem.descripcion || ''
     descripcionCompleta += `\n🥩 ${configuredItem.tipoCarne === 'carne' ? 'Carne' : 'Pollo'}`
-    
-    if (configuredItem.extraPapas) {
-      descripcionCompleta += `\n🍟 ${configuredItem.extraPapas.nombre}`
+
+    if (configuredItem.extraPapas && configuredItem.extraPapas.length > 0) {
+      const nombresExtras = configuredItem.extraPapas.map(e => e.nombre).join(', ')
+      descripcionCompleta += `\n🍟 Papas con ${nombresExtras}`
     } else {
       descripcionCompleta += '\n🍟 Papas incluidas'
     }
@@ -174,10 +174,6 @@ const Milanesas = () => {
       )}
 
       {/* Sección Papas */}
-      <div className="papas_banner">
-        <img className="papas_extra-img" src={fritasExtra_image} alt="Papas extras" />
-      </div>
-
       <div className="section-header">
         <h2 className="section-title-small">Papas</h2>
       </div>

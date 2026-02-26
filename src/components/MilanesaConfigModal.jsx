@@ -3,7 +3,7 @@ import { X, ShoppingCart, Check } from 'lucide-react';
 
 const MilanesaConfigModal = ({ item, onClose, onConfirm }) => {
   const [tipoCarne, setTipoCarne] = useState('');
-  const [extraPapas, setExtraPapas] = useState('');
+  const [extrasSeleccionados, setExtrasSeleccionados] = useState([]) // ahora es array
   const [errorCarne, setErrorCarne] = useState('');
   const [errorPapas, setErrorPapas] = useState('');
 
@@ -14,6 +14,38 @@ const MilanesaConfigModal = ({ item, onClose, onConfirm }) => {
     { id: 'provenzal', nombre: 'Provenzal', precio: 5000 }
   ];
 
+  const handleExtraClick = (extraId) => {
+    setErrorPapas('');
+
+    if (extraId === 'ninguno') {
+      // Si elige "Sin extra", limpia todo y solo marca ninguno
+      setExtrasSeleccionados(['ninguno'])
+      return
+    }
+
+    setExtrasSeleccionados(prev => {
+      // Sacar "ninguno" si estaba seleccionado
+      const sinNinguno = prev.filter(e => e !== 'ninguno')
+
+      if (sinNinguno.includes(extraId)) {
+        // Si ya estaba seleccionado, lo deselecciona
+        return sinNinguno.filter(e => e !== extraId)
+      } else {
+        // Si no estaba, lo agrega
+        return [...sinNinguno, extraId]
+      }
+    })
+  }
+
+  const precioExtras = extrasSeleccionados
+    .filter(id => id !== 'ninguno')
+    .reduce((sum, id) => {
+      const extra = extrasOptions.find(e => e.id === id)
+      return sum + (extra?.precio || 0)
+    }, 0)
+
+  const precioFinalTotal = item.precio + precioExtras
+
   const handleConfirm = () => {
     let hasError = false;
 
@@ -22,21 +54,25 @@ const MilanesaConfigModal = ({ item, onClose, onConfirm }) => {
       hasError = true;
     }
 
-    if (!extraPapas) {
+    if (extrasSeleccionados.length === 0) {
       setErrorPapas('Debes seleccionar una opción para las papas');
       hasError = true;
     }
 
     if (hasError) return;
 
-    const selectedExtra = extrasOptions.find(e => e.id === extraPapas);
-    const precioFinal = item.precio + (selectedExtra?.precio || 0);
+    // Si eligió ninguno, extraPapas es null
+    // Si eligió uno o más extras, los manda como array
+    const sinNinguno = extrasSeleccionados.filter(id => id !== 'ninguno')
+    const extrasFinales = sinNinguno.length === 0
+      ? null
+      : sinNinguno.map(id => extrasOptions.find(e => e.id === id))
 
     onConfirm({
       ...item,
       tipoCarne,
-      extraPapas: extraPapas === 'ninguno' ? null : selectedExtra,
-      precioFinal
+      extraPapas: extrasFinales, // null o array de extras
+      precioFinal: precioFinalTotal
     });
   };
 
@@ -51,93 +87,77 @@ const MilanesaConfigModal = ({ item, onClose, onConfirm }) => {
           <h2 className="modal-title">Configurá tu Milanesa</h2>
           <p className="modal-subtitle">{item.nombre}</p>
 
-        {/* Tipo de Carne - OBLIGATORIO */}
-        <div className="config-section">
-          <h3 className="config-title">
-            Tipo de Carne <span className="required">*</span>
-          </h3>
-          <div className="options-grid">
-            <button
-              className={`option-card ${tipoCarne === 'carne' ? 'selected' : ''}`}
-              onClick={() => {
-                setTipoCarne('carne');
-                setErrorCarne('');
-              }}
-            >
-              {tipoCarne === 'carne' && (
-                <div className="check-badge">
-                  <Check size={16} />
-                </div>
-              )}
-              <span className="option-name">Carne</span>
-            </button>
-            <button
-              className={`option-card ${tipoCarne === 'pollo' ? 'selected' : ''}`}
-              onClick={() => {
-                setTipoCarne('pollo');
-                setErrorCarne('');
-              }}
-            >
-              {tipoCarne === 'pollo' && (
-                <div className="check-badge">
-                  <Check size={16} />
-                </div>
-              )}
-              <span className="option-name">Pollo</span>
-            </button>
-          </div>
-          {errorCarne && <p className="error-message">{errorCarne}</p>}
-        </div>
-
-        {/* Extras para Papas - OBLIGATORIO */}
-        <div className="config-section">
-          <h3 className="config-title">
-            Extras para las Papas <span className="required">*</span>
-          </h3>
-          <p className="info-text">Todas nuestras milanesas vienen con papas incluidas</p>
-          <div className="options-list">
-            {extrasOptions.map((extra) => (
+          {/* Tipo de Carne */}
+          <div className="config-section">
+            <h3 className="config-title">
+              Tipo de Carne <span className="required">*</span>
+            </h3>
+            <div className="options-grid">
               <button
-                key={extra.id}
-                className={`option-row ${extraPapas === extra.id ? 'selected' : ''}`}
-                onClick={() => {
-                  setExtraPapas(extra.id);
-                  setErrorPapas('');
-                }}
+                className={`option-card ${tipoCarne === 'carne' ? 'selected' : ''}`}
+                onClick={() => { setTipoCarne('carne'); setErrorCarne(''); }}
               >
-                <div className="option-info">
-                  <span className="option-name">{extra.nombre}</span>
-                  {extra.precio > 0 && (
-                    <span className="option-price">+${extra.precio.toLocaleString('es-AR')}</span>
-                  )}
-                </div>
-                {extraPapas === extra.id && (
-                  <div className="check-badge-small">
-                    <Check size={16} />
-                  </div>
-                )}
+                {tipoCarne === 'carne' && <div className="check-badge"><Check size={16} /></div>}
+                <span className="option-name">Carne</span>
               </button>
-            ))}
+              <button
+                className={`option-card ${tipoCarne === 'pollo' ? 'selected' : ''}`}
+                onClick={() => { setTipoCarne('pollo'); setErrorCarne(''); }}
+              >
+                {tipoCarne === 'pollo' && <div className="check-badge"><Check size={16} /></div>}
+                <span className="option-name">Pollo</span>
+              </button>
+            </div>
+            {errorCarne && <p className="error-message">{errorCarne}</p>}
           </div>
-          {errorPapas && <p className="error-message">{errorPapas}</p>}
-        </div>
 
-        {/* Precio Total */}
-                {/* Precio Total */}
-        <div className="modal-total">
-          <span>Total:</span>
-          <span className="total-amount">
-            ${(item.precio + (extrasOptions.find(e => e.id === extraPapas)?.precio || 0)).toLocaleString('es-AR')}
-          </span>
-        </div>
+          {/* Extras para Papas */}
+          <div className="config-section">
+            <h3 className="config-title">
+              Extras para las Papas <span className="required">*</span>
+            </h3>
+            <p className="info-text">Todas nuestras milanesas vienen con papas incluidas</p>
+            
+            {/* Mini texto solo cuando hay extras seleccionados que no son ninguno */}
+            {extrasSeleccionados.some(e => e !== 'ninguno') && (
+              <p className="multi-extras-hint">🎉 ¡Agregá todos los extras que quieras!</p>
+            )}
 
-        {/* Botón Confirmar */}
-        <button className="modal-confirm-btn" onClick={handleConfirm}>
-          <ShoppingCart size={20} />
-          Agregar al carrito
-        </button>
+            <div className="options-list">
+              {extrasOptions.map((extra) => (
+                <button
+                  key={extra.id}
+                  className={`option-row ${extrasSeleccionados.includes(extra.id) ? 'selected' : ''}`}
+                  onClick={() => handleExtraClick(extra.id)}
+                >
+                  <div className="option-info">
+                    <span className="option-name">{extra.nombre}</span>
+                    {extra.precio > 0 && (
+                      <span className="option-price">+${extra.precio.toLocaleString('es-AR')}</span>
+                    )}
+                  </div>
+                  {extrasSeleccionados.includes(extra.id) && (
+                    <div className="check-badge-small"><Check size={16} /></div>
+                  )}
+                </button>
+              ))}
+            </div>
+            {errorPapas && <p className="error-message">{errorPapas}</p>}
+          </div>
+
+          {/* Precio Total */}
+          <div className="modal-total">
+            <span>Total:</span>
+            <span className="total-amount">${precioFinalTotal.toLocaleString('es-AR')}</span>
+          </div>
+
+          {/* Botón Confirmar */}
+          <button className="modal-confirm-btn" onClick={handleConfirm}>
+            <ShoppingCart size={20} />
+            Agregar al carrito
+          </button>
+        </div>
       </div>
-    </div>
 
       <style>{`
         .modal-overlay {
@@ -223,19 +243,23 @@ const MilanesaConfigModal = ({ item, onClose, onConfirm }) => {
           font-weight: 700;
         }
 
-        .optional {
-          color: #6b7280;
-          font-size: 14px;
-          font-weight: 400;
-        }
-
         .info-text {
           font-size: 14px;
           color: #059669;
           background: #d1fae5;
           padding: 8px 12px;
           border-radius: 8px;
-          margin-bottom: 12px;
+          margin-bottom: 8px;
+          font-weight: 500;
+        }
+
+        .multi-extras-hint {
+          font-size: 13px;
+          color: #d97706;
+          background: #fef3c7;
+          padding: 6px 12px;
+          border-radius: 8px;
+          margin-bottom: 10px;
           font-weight: 500;
         }
 
@@ -398,21 +422,10 @@ const MilanesaConfigModal = ({ item, onClose, onConfirm }) => {
         }
 
         @media (max-width: 640px) {
-          .modal-config {
-            padding: 20px;
-          }
-
-          .modal-title {
-            font-size: 20px;
-          }
-
-          .options-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .option-card {
-            min-height: 60px;
-          }
+          .modal-config { padding: 20px; }
+          .modal-title { font-size: 20px; }
+          .options-grid { grid-template-columns: 1fr; }
+          .option-card { min-height: 60px; }
         }
       `}</style>
     </div>

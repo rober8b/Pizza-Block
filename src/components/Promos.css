@@ -323,6 +323,90 @@
   font-size: 0.95rem;
 }
 
+.promo-config {
+  padding: 0 2rem 1.5rem 2rem;
+  text-align: center;
+}
+.empanadas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 0.8rem;
+}
+
+.emp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.contador {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.contador button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg,#d32f2f,#ff5252);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.contador button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.contador span {
+  min-width: 20px;
+  text-align: center;
+}
+
+.promo-config h4 {
+  margin: 1rem 0 0.6rem 0;
+  color: #333;
+  font-weight: 700;
+}
+
+.config-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.config-btn {
+  border: 2px solid #d32f2f;
+  background: white;
+  color: #d32f2f;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.config-btn:hover {
+  background: #ffeaea;
+}
+
+.config-btn.active {
+  background: linear-gradient(135deg, #d32f2f, #ff5252);
+  color: white;
+}
+
+.pizza-select-row {
+  margin-bottom: 1rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .banner_delivery-img{
@@ -369,6 +453,138 @@
 
   .modal-content {
     margin: 1rem;
+  }
+}
+
+/* ===============================
+   FIX MODAL PROMOS - DESKTOP
+================================ */
+@media (min-width: 1024px) {
+
+  .modal-content {
+    max-width: 720px; /* antes 500px */
+    width: 90%;
+  }
+
+  .modal-title-promo {
+    font-size: 2.2rem;
+    margin-top: 1.2rem;
+  }
+
+  .modal-promo-description {
+    padding: 0 3rem 1rem 3rem;
+  }
+
+  .promo-config {
+    padding: 0 3rem 1.5rem 3rem;
+  }
+
+  /* filas más limpias en desktop */
+  .emp-row {
+    padding: 0.8rem 1.2rem;
+  }
+
+  .emp-row span {
+    font-size: 1rem;
+  }
+
+  .contador {
+    gap: 0.75rem;
+  }
+
+  .contador button {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+
+  /* botones molde/piedra mejor centrados */
+  .config-options {
+    justify-content: center;
+    gap: 0.8rem;
+  }
+
+  .config-btn {
+    min-width: 120px;
+    padding: 0.55rem 1rem;
+  }
+}
+
+.modal-validation {
+  text-align: center;
+  margin-top: 0.8rem;
+  color: #d32f2f;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+/* ===== MOBILE FIX MODAL PROMOS ===== */
+@media (max-width: 768px) {
+
+  .promo-config {
+    padding: 0 1rem 1.2rem 1rem;
+  }
+
+  .emp-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .emp-row span {
+    font-size: 0.95rem;
+    flex: 1;
+    text-align: left;
+  }
+
+  .contador {
+    gap: 0.4rem;
+  }
+
+  .contador button {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .contador span {
+    min-width: 22px;
+    font-size: 0.95rem;
+  }
+
+  /* botones molde/piedra centrados */
+  .config-options {
+    justify-content: center;
+  }
+
+  .config-btn {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  /* modal más cómodo en celular */
+  .modal-content {
+    width: calc(100% - 1rem);
+    margin: 0.5rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* EXTRA SMALL (celus chicos) */
+@media (max-width: 480px) {
+
+  .emp-row {
+    padding: 0.6rem 0.7rem;
+  }
+
+  .emp-row span {
+    font-size: 0.9rem;
+  }
+
+  .contador button {
+    width: 30px;
+    height: 30px;
   }
 }
 

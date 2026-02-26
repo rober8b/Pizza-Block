@@ -16,6 +16,36 @@ function formatDate(isoString) {
   return new Date(isoString).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
+function buildPromoExtras(config) {
+  if (!config) return null
+
+  const extras = []
+
+  // pizza simple
+  if (config.pizzaTipo) {
+    extras.push(`🍕 ${config.pizzaTipo === 'Molde' ? 'Al molde' : 'A la piedra'}`)
+  }
+
+  // pizzas multiples (promo 3)
+  if (config.pizzas) {
+    Object.entries(config.pizzas).forEach(([num, tipo]) => {
+      extras.push(`🍕 Pizza ${num}: ${tipo}`)
+    })
+  }
+
+  // empanadas
+  if (config.empanadas) {
+    const textoEmp = Object.entries(config.empanadas)
+      .filter(([_, cant]) => cant > 0)
+      .map(([gusto, cant]) => `${gusto} x${cant}`)
+      .join(', ')
+
+    if (textoEmp) extras.push(`🥟 ${textoEmp}`)
+  }
+
+  return extras.join(' · ')
+}
+
 // Build a rich product list from whatever shape the cart items have
 function ProductsList({ products }) {
   if (!Array.isArray(products) || products.length === 0) {
@@ -27,11 +57,17 @@ function ProductsList({ products }) {
         const qty  = p.cantidad ?? p.quantity ?? 1
         const name = p.nombre ?? p.name ?? p.title ?? '—'
         // Build extras string from known fields
+        const promoExtras = buildPromoExtras(p.configuracion)
         const extras = [
-          p.tipoPizza   ? (p.tipoPizza === 'al_molde' ? '🍕 Al molde' : '🔥 A la piedra') : null,
-          p.tipoCarne   ? (p.tipoCarne === 'carne' ? '🥩 Carne' : '🍗 Pollo') : null,
-          p.extraPapas  ? `🍟 Papas con ${p.extraPapas.nombre ?? p.extraPapas}` : null,
+          p.tipoPizza ? (p.tipoPizza === 'al_molde' ? '🍕 Al molde' : '🔥 A la piedra') : null,
+          p.tipoCarne ? (p.tipoCarne === 'carne' ? '🥩 Carne' : '🍗 Pollo') : null,
+          p.extraPapas
+            ? Array.isArray(p.extraPapas)
+              ? `🍟 Papas con ${p.extraPapas.map(e => e.nombre).join(', ')}`
+              : `🍟 Papas con ${p.extraPapas.nombre ?? p.extraPapas}`
+            : null,
           p.ingredientes?.length ? `🥗 ${p.ingredientes.join(', ')}` : null,
+          promoExtras
         ].filter(Boolean).join(' · ')
 
         return (
@@ -51,11 +87,17 @@ function formatProductsText(products) {
   return products.map(p => {
     const qty  = p.cantidad ?? p.quantity ?? 1
     const name = p.nombre ?? p.name ?? p.title ?? '?'
+    const promoExtras = buildPromoExtras(p.configuracion)
     const extras = [
       p.tipoPizza   ? (p.tipoPizza === 'al_molde' ? '🍕 Al molde' : '🔥 A la piedra') : null,
       p.tipoCarne   ? (p.tipoCarne === 'carne' ? '🥩 Carne' : '🍗 Pollo') : null,
-      p.extraPapas  ? `🍟 Papas con ${p.extraPapas.nombre ?? p.extraPapas}` : null,
+      p.extraPapas
+        ? Array.isArray(p.extraPapas)
+          ? `🍟 Papas con ${p.extraPapas.map(e => e.nombre).join(', ')}`
+          : `🍟 Papas con ${p.extraPapas.nombre ?? p.extraPapas}`
+        : null,
       p.ingredientes?.length ? `🥗 ${p.ingredientes.join(', ')}` : null,
+      promoExtras
     ].filter(Boolean).join(' · ')
     return extras ? `${qty}x ${name} (${extras})` : `${qty}x ${name}`
   }).join(' | ')
@@ -79,6 +121,11 @@ function OrderCard({ order, onAdvance, isNew }) {
       <div className="order-card__footer">
         <span className="order-card__total">${order.total?.toLocaleString('es-AR')}</span>
         <span className="order-card__payment">{order.payment_method}</span>
+        {order.cash_amount && (
+          <span className="order-card__cash">
+            💵 Abona con: {order.cash_amount === 'justo' ? 'Justo' : `$${parseInt(order.cash_amount).toLocaleString('es-AR')}`}
+          </span>
+        )}
       </div>
 
       {order.receipt_url && (

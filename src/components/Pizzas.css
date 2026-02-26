@@ -268,7 +268,6 @@
 
 /* ── Títulos sin padding lateral propio — el modal ya tiene el padding ── */
 .modal-title {
-  font-size: 2rem;
   font-weight: 700;
   color: #333;
   padding: 1.5rem 0 0.5rem 0;
@@ -428,7 +427,6 @@
   .search-input { font-size: 14px; padding: 10px 40px; }
   .section-title { font-size: 2rem; }
   .modal-content { padding: 2rem; }
-  .modal-title { font-size: 1.6rem; }
   .price-value { font-size: 1.6rem; }
 }
 

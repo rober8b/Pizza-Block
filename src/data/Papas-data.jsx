@@ -1,7 +1,6 @@
 const papasData = [
-    { id: 1, nombre: 'Cheddar - Panceta y Verdeo', precio: 7500 },
-    { id: 2, nombre: 'Huevos Fritos (Dos)', precio: 5000 },
-    { id: 3, nombre: 'Provenzal', precio: 5000 },
+    { id: 1, nombre: 'Porción de Fritas ', descripcion: '(Para Compartir)', precio: 10000 },
+    { id: 2, nombre: 'Media Porción de Fritas', descripcion: '(Media Porción)', precio: 8000 }
 ]
 
 export default papasData
