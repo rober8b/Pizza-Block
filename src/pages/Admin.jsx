@@ -115,6 +115,9 @@ function OrderCard({ order, onAdvance, isNew }) {
       </div>
 
       <div className="order-card__address">📍 {order.address}</div>
+      <div className="order-card__phone" onClick={() => navigator.clipboard.writeText(order.phone)}>
+        📞 <strong>{order.phone}</strong>
+      </div>
 
       <ProductsList products={order.products} />
 

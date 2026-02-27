@@ -313,6 +313,18 @@ html, body, #root, .App {
   font-size: 0.85rem;
 }
 
+.order-card__phone {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  cursor: pointer;
+  user-select: all;
+}
+
+.order-card__phone:hover strong {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
 .order-card__cash {
   font-size: 0.78rem;
   color: #059669;

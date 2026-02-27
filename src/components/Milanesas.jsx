@@ -10,6 +10,7 @@ import { useCart } from '../context/CartContext'
 import MilanesaConfigModal from './MilanesaConfigModal' 
 import SandwichConfigModal from './SandwichConfigModal'
 import { estaAbierto } from '../utils/HorariosService'
+import PapasConfigModal from './PapasConfigModal'
 
 const Milanesas = () => {
   const [searchMilanesas, setSearchMilanesas] = useState('')
@@ -20,6 +21,7 @@ const Milanesas = () => {
   const [sandwichToConfig, setSandwichToConfig] = useState(null)
   const [abierto, setAbierto] = useState(estaAbierto())
   const { addToCart } = useCart()
+  const [papasToConfig, setPapasToConfig] = useState(null)
 
   // Verificar estado cada minuto
   useEffect(() => {
@@ -62,6 +64,8 @@ const Milanesas = () => {
         ...producto,
         categoria: categoria
       })
+    } else if (categoria === 'Papas') {
+      setPapasToConfig({ ...producto, categoria })
     } else {
       addToCart({
         ...producto,
@@ -97,6 +101,14 @@ const Milanesas = () => {
     })
 
     setSandwichToConfig(null)
+  }
+
+  const handleConfirmPapas = (configuredItem) => {
+    addToCart({
+      ...configuredItem,
+      precio: configuredItem.precioFinal
+    })
+    setPapasToConfig(null)
   }
 
   return (
@@ -338,6 +350,14 @@ const Milanesas = () => {
           item={sandwichToConfig}
           onClose={() => setSandwichToConfig(null)}
           onConfirm={handleConfirmSandwich}
+        />
+      )}
+
+      {papasToConfig && (
+        <PapasConfigModal
+          item={papasToConfig}
+          onClose={() => setPapasToConfig(null)}
+          onConfirm={handleConfirmPapas}
         />
       )}
     </div>
