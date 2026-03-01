@@ -103,7 +103,7 @@
       id: 13, 
       nombre: 'Chocotorta', 
       descripcion: 'Postre tradicional argentino', 
-      precio: 5500,
+      precio: 6000,
       tipo: 'postre',
       categoria: 'Postre'
     },
@@ -111,7 +111,7 @@
       id: 14, 
       nombre: 'Oreo', 
       descripcion: 'Postre de Oreo', 
-      precio: 5500,
+      precio: 6000,
       tipo: 'postre',
       categoria: 'Postre'
     }
