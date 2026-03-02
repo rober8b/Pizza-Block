@@ -1,5 +1,5 @@
 // src/utils/horariosService.js
-
+import { supabase } from '../lib/supabase'
 // Configuración de horarios
 const HORARIOS_ATENCION = {
   // 0 = Domingo, 1 = Lunes, ... 6 = Sábado
@@ -11,6 +11,32 @@ const HORARIOS_ATENCION = {
   sabado: { dia: 6, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
   domingo: { dia: 0, horarios: [{ inicio: '11:30', fin: '15:30' }, { inicio: '19:00', fin: '24:00' }] },
 };
+
+/**
+ * Verifica si el negocio está en período de vacaciones
+ */
+export const estaDeVacaciones = async () => {
+  const { data, error } = await supabase
+    .from('configuracion')
+    .select('valor')
+    .eq('id', 'vacaciones')
+    .single()
+
+  if (error || !data?.valor) return null
+
+  const { desde, hasta } = data.valor
+  const hoy = new Date()
+  hoy.setHours(0, 0, 0, 0)
+  const desdeDate = new Date(desde)
+  const hastaDate = new Date(hasta)
+  hastaDate.setHours(23, 59, 59, 999)
+
+  if (hoy >= desdeDate && hoy <= hastaDate) {
+    return data.valor // retorna { desde, hasta } si está de vacaciones
+  }
+
+  return null // no está de vacaciones
+}
 
 const MODO_PRUEBA = false; // ← cambiado a false, ahora respeta los horarios reales
 

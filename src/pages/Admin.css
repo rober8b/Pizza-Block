@@ -519,3 +519,103 @@ html, body, #root, .App {
   font-size: 0.85rem;
   font-weight: 600;
 }
+
+.btn--vacaciones {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn--vacaciones:hover { background: rgba(255,255,255,0.25); }
+
+.btn--vacaciones.activo {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+}
+
+.btn--reabrir {
+  background: #4caf82;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin__modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.admin__modal-box {
+  background: white;
+  border-radius: 14px;
+  padding: 28px;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.admin__modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.admin__vac-activa {
+  background: #dcfce7;
+  border: 1px solid #4caf82;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  color: #166534;
+}
+
+.admin__modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin__modal-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.admin__modal-field input[type="date"] {
+  padding: 10px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.admin__modal-field input[type="date"]:focus {
+  border-color: #1a1a2e;
+}
+
+.admin__modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

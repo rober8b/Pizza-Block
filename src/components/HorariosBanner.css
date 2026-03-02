@@ -570,3 +570,37 @@
     gap: 0.5rem;
   }
 }
+
+.vacaciones-banner {
+  background: #333;
+  color: white;
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.vacaciones-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.vacaciones-icon {
+  font-size: 1.5rem;
+}
+
+.vacaciones-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vacaciones-texto strong {
+  font-size: 1rem;
+}
+
+.vacaciones-texto span {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  color: #d32f2f;
+}

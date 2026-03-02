@@ -220,6 +220,11 @@ export default function Admin() {
   const [historialLoading, setHistorialLoading] = useState(false)
   const [soundUnlocked, setSoundUnlocked] = useState(false)
   const audioCtxRef = useRef(null)
+  const [showVacacionesModal, setShowVacacionesModal] = useState(false)
+  const [vacaciones, setVacaciones] = useState(null) // { desde, hasta } o null
+  const [vacDesde, setVacDesde] = useState('')
+  const [vacHasta, setVacHasta] = useState('')
+  const [savingVac, setSavingVac] = useState(false)
 
   // ── Sound ──────────────────────────────────────────────
   const unlockSound = () => {
@@ -267,6 +272,60 @@ export default function Admin() {
     setLoading(false)
   }, [])
 
+  const fetchVacaciones = useCallback(async () => {
+    const { data } = await supabase
+      .from('configuracion')
+      .select('valor')
+      .eq('id', 'vacaciones')
+      .single()
+
+    if (data?.valor?.activo && data?.valor?.fechaInicio && data?.valor?.fechaFin) {
+      const hoy = new Date()
+      hoy.setHours(0, 0, 0, 0)
+      const desde = new Date(data.valor.fechaInicio + 'T00:00:00')
+      const hasta = new Date(data.valor.fechaFin + 'T23:59:59')
+
+      if (hoy >= desde && hoy <= hasta) {
+        setVacaciones(data.valor)
+      } else {
+        setVacaciones(null)
+      }
+    } else {
+      setVacaciones(null)
+    }
+  }, [])
+
+  const guardarVacaciones = async () => {
+    if (!vacDesde) return alert('Seleccioná la fecha de inicio')
+    if (vacHasta && vacHasta < vacDesde) return alert('La fecha de fin no puede ser anterior al inicio')
+    setSavingVac(true)
+    const hasta = vacHasta || vacDesde
+
+    const { error } = await supabase
+      .from('configuracion')
+      .update({ valor: { activo: true, fechaInicio: vacDesde, fechaFin: hasta } })
+      .eq('id', 'vacaciones')
+
+    if (error) {
+      alert('Error guardando: ' + error.message)
+      setSavingVac(false)
+      return
+    }
+
+    setVacaciones({ activo: true, fechaInicio: vacDesde, fechaFin: hasta })
+    setShowVacacionesModal(false)
+    setSavingVac(false)
+  }
+
+  const cancelarVacaciones = async () => {
+    const { error } = await supabase
+      .from('configuracion')
+      .update({ valor: { activo: false, fechaInicio: null, fechaFin: null } })
+      .eq('id', 'vacaciones')
+
+    if (!error) setVacaciones(null)
+  }
+
   const fetchHistorial = useCallback(async () => {
     setHistorialLoading(true)
     const { data, error } = await supabase
@@ -296,6 +355,7 @@ export default function Admin() {
   // ── Realtime ────────────────────────────────────────────
   useEffect(() => {
     fetchOrders()
+    fetchVacaciones()
 
     const channel = supabase
       .channel('orders-admin')
@@ -341,6 +401,21 @@ export default function Admin() {
             {showHistorial ? '✕ Cerrar historial' : '📋 Ver historial'}
           </button>
           <button className="btn btn--refresh" onClick={fetchOrders}>↺ Actualizar</button>
+          <button
+            className={`btn btn--vacaciones ${vacaciones?.activo ? 'activo' : ''}`}
+            onClick={() => {
+              if (vacaciones) {
+                setVacDesde(vacaciones.desde)
+                setVacHasta(vacaciones.hasta)
+              } else {
+                setVacDesde('')
+                setVacHasta('')
+              }
+              setShowVacacionesModal(true)
+            }}
+          >
+            {vacaciones?.activo ? '🌴 De vacaciones' : '🌴 Cerrar por vacaciones'}
+          </button>
         </div>
       </header>
 
@@ -392,6 +467,58 @@ export default function Admin() {
           ))}
         </div>
       )}
+
+      {showVacacionesModal && (
+        <div className="admin__modal-overlay" onClick={() => setShowVacacionesModal(false)}>
+              <div className="admin__modal-box" onClick={e => e.stopPropagation()}>
+                <h2 className="admin__modal-title">🌴 Cierre por vacaciones</h2>
+
+                  {vacaciones && (
+                    <div className="admin__vac-activa">
+                      <p>✅ Actualmente cerrado desde <strong>
+                        {new Date(vacaciones.fechaInicio + 'T00:00:00').toLocaleDateString('es-AR')}
+                      </strong> hasta <strong>
+                        {new Date(vacaciones.fechaFin + 'T00:00:00').toLocaleDateString('es-AR')}
+                      </strong></p>
+                    </div>
+                  )}
+
+                  <div className="admin__modal-field">
+                    <label>Fecha de inicio *</label>
+                    <input
+                      type="date"
+                      value={vacDesde}
+                      min={new Date().toISOString().split('T')[0]}
+                      onChange={e => setVacDesde(e.target.value)}
+                    />
+              </div>
+
+              <div className="admin__modal-field">
+                <label>Fecha de reapertura (opcional — si no ponés, cierra solo ese día)</label>
+                <input
+                  type="date"
+                  value={vacHasta}
+                  min={vacDesde || new Date().toISOString().split('T')[0]}
+                  onChange={e => setVacHasta(e.target.value)}
+                />
+              </div>
+
+              <div className="admin__modal-actions">
+                <button className="btn btn--primary" onClick={guardarVacaciones} disabled={savingVac}>
+                  {savingVac ? 'Guardando...' : vacaciones ? '✏️ Modificar fechas' : '✅ Confirmar cierre'}
+                </button>
+                {vacaciones && (
+                  <button className="btn btn--reabrir" onClick={cancelarVacaciones}>
+                    🔓 Reabrir ahora
+                  </button>
+                )}
+                <button className="btn btn--refresh" onClick={() => setShowVacacionesModal(false)}>
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   )
 }

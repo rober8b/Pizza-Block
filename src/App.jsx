@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
+import { supabase } from './lib/supabase'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Home from './components/Home'
 import Navbar from './components/Navbar'
@@ -36,6 +38,75 @@ function HomePage() {
 function AppShell() {
   const location = useLocation()
   const isAdmin = location.pathname === '/admin'
+  const [vacaciones, setVacaciones] = useState(null)
+  const [checkingVac, setCheckingVac] = useState(true)
+
+  useEffect(() => {
+    if (isAdmin) { setCheckingVac(false); return } // no bloquear el admin
+    
+    const check = async () => {
+      try {
+        const { data } = await supabase
+          .from('configuracion')
+          .select('valor')
+          .eq('id', 'vacaciones')
+          .single()
+
+        console.log('Vacaciones data:', data) // 👈 agregá esto
+        console.log('Valor:', data?.valor)    // 👈 y esto
+
+        if (data?.valor?.activo && data?.valor?.fechaInicio && data?.valor?.fechaFin) {
+          const hoy = new Date()
+          hoy.setHours(0, 0, 0, 0)
+          
+          // Parsear fechas como locales agregando T00:00:00 para evitar problema UTC
+          const desde = new Date(data.valor.fechaInicio + 'T00:00:00')
+          const hasta = new Date(data.valor.fechaFin + 'T23:59:59')
+          
+          if (hoy >= desde && hoy <= hasta) {
+            setVacaciones(data.valor)
+          }
+        }
+      } catch (e) {}
+      setCheckingVac(false)
+    }
+    check()
+  }, [isAdmin])
+
+  if (checkingVac) return null // espera silenciosa
+
+  // Pantalla de vacaciones para clientes
+  if (vacaciones && !isAdmin) {
+    const reabreDate = new Date(vacaciones.fechaFin) // ✅
+    reabreDate.setDate(reabreDate.getDate() + 1)
+    const reabreDia = reabreDate.toLocaleDateString('es-AR', {
+      weekday: 'long', day: 'numeric', month: 'long'
+    })
+
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#000000',
+        color: 'white',
+        textAlign: 'center',
+        padding: '2rem',
+        gap: '1rem'
+      }}>
+        <span style={{ fontSize: '5rem' }}>🍕</span>
+        <h1 style={{ fontSize: '2rem', fontWeight: 800 }}>¡Estamos de vacaciones!</h1>
+        <p style={{ fontSize: '1.1rem', color: '#cbd5e1', maxWidth: 400 }}>
+          Lo sentimos, no estamos tomando pedidos en este momento.
+        </p>
+        <p style={{ fontSize: '1.2rem', fontWeight: 700, color: '#d32f2f' }}>
+          Reabrimos el {reabreDia} 🎉
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className='App'>
@@ -44,8 +115,6 @@ function AppShell() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
-
-      {/* Hide cart UI on admin — it breaks the layout */}
       {!isAdmin && (
         <>
           <Cart />

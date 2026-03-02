@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { User, Mail, Phone, MapPin, DollarSign, ShoppingBag, ArrowLeft, Loader, Home, Store } from 'lucide-react'
 import MercadoPagoModal from '../components/MercadoPagoModal'
 import { uploadReceipt, createOrder } from '../services/orderService'
 import './Checkout.css'
+import { supabase } from '../lib/supabase'
 
 const buildPromoConfigLines = (config) => {
   if (!config) return []
@@ -73,6 +74,35 @@ const Checkout = () => {
   // Estados para Mercado Pago
   const [mpModalOpen, setMpModalOpen] = useState(false)
   const [pendingOrderData, setPendingOrderData] = useState(null)
+
+  //estados para vacaciones
+  const [enVacaciones, setEnVacaciones] = useState(false)
+  const [infoVacaciones, setInfoVacaciones] = useState(null)
+
+  useEffect(() => {
+    const checkVac = async () => {
+      const { data } = await supabase
+        .from('configuracion')
+        .select('valor')
+        .eq('id', 'vacaciones')
+        .single()
+
+      if (!data?.valor) return
+
+      const { desde, hasta } = data.valor
+      const hoy = new Date()
+      hoy.setHours(0, 0, 0, 0)
+      const desdeDate = new Date(desde)
+      const hastaDate = new Date(hasta)
+      hastaDate.setHours(23, 59, 59, 999)
+
+      if (hoy >= desdeDate && hoy <= hastaDate) {
+        setEnVacaciones(true)
+        setInfoVacaciones(data.valor)
+      }
+    }
+    checkVac()
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -238,6 +268,28 @@ const Checkout = () => {
           <ShoppingBag size={64} />
           <h2>No hay productos en tu carrito</h2>
           <p>Agregá productos para continuar con tu pedido</p>
+          <button onClick={() => navigate('/')} className="btn-volver">
+            Volver al inicio
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (enVacaciones && infoVacaciones) {
+    const reabreDate = new Date(infoVacaciones.hasta)
+    reabreDate.setDate(reabreDate.getDate() + 1)
+    const reabreDia = reabreDate.toLocaleDateString('es-AR', {
+      weekday: 'long', day: 'numeric', month: 'long'
+    })
+
+    return (
+      <div className="checkout-container">
+        <div className="checkout-empty">
+          <span style={{ fontSize: '4rem' }}>🌴</span>
+          <h2>¡Estamos de vacaciones!</h2>
+          <p>Lo sentimos, no estamos tomando pedidos en este momento.</p>
+          <p><strong>Reabrimos el {reabreDia}</strong></p>
           <button onClick={() => navigate('/')} className="btn-volver">
             Volver al inicio
           </button>
@@ -521,7 +573,7 @@ const Checkout = () => {
                     )}
                   </div>
 
-                  <button type="submit" className="btn-submit" disabled={loading}>
+                  <button type="submit" className="btn-submit" disabled={loading || enVacaciones}>
                     {loading ? (
                       <>
                         <Loader className="spinner" size={20} />
