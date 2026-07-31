@@ -67,25 +67,25 @@
     },
     { 
       id: 9, 
-      nombre: 'Coca Cola 2.25L', 
-      descripcion: 'Gaseosa 2.25L', 
-      precio: 6500,
+      nombre: 'Coca Cola 2.25L',
+      descripcion: 'Gaseosa 2.25L',
+      precio: 7500,
       tipo: 'bebida',
       categoria: 'Gaseosa'
     },
     { 
       id: 10, 
-      nombre: 'Coca Cola Zero 2.25L', 
-      descripcion: 'Gaseosa 2.25L', 
-      precio: 6500,
+      nombre: 'Coca Cola Zero 2.25L',
+      descripcion: 'Gaseosa 2.25L',
+      precio: 7500,
       tipo: 'bebida',
       categoria: 'Gaseosa'
     },
     { 
       id: 11, 
-      nombre: 'Sprite 2.25L', 
-      descripcion: 'Gaseosa 2.25L', 
-      precio: 6500,
+      nombre: 'Sprite 2.25L',
+      descripcion: 'Gaseosa 2.25L',
+      precio: 7500,
       tipo: 'bebida',
       categoria: 'Gaseosa'
     },
