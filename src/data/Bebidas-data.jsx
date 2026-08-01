@@ -101,17 +101,17 @@
     // Postres
     { 
       id: 13, 
-      nombre: 'Chocotorta', 
-      descripcion: 'Postre tradicional argentino', 
-      precio: 6000,
+      nombre: 'Chocotorta',
+      descripcion: 'Postre tradicional argentino',
+      precio: 7000,
       tipo: 'postre',
       categoria: 'Postre'
     },
     { 
       id: 14, 
       nombre: 'Oreo', 
-      descripcion: 'Postre de Oreo', 
-      precio: 6000,
+      descripcion: 'Postre de Oreo',
+      precio: 7000,
       tipo: 'postre',
       categoria: 'Postre'
     }
